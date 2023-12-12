@@ -8,7 +8,7 @@ import { Sign } from "@/com/routes/Sign";
 import { CommonModal, CommonToast } from "@/com/components/_";
 
 function App() {
-    console.log("app");
+    console.log("asdasd");
     return (
         <CookiesProvider>
             <RecoilProvider>
