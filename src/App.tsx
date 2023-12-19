@@ -1,15 +1,13 @@
-import { Route } from "react-router-dom";
-import { Base } from "@/comn";
-import { Main } from "@/tra/tancis/Main";
-import { Popup } from "@/tra/tancis/Popup";
+import { Route } from 'react-router-dom'
+import { Base } from '@/comn'
+import { Main } from '@/tra/tancis/Main'
 
 function App() {
     return (
         <Base>
-            <Route path="/popup/*" element={<Popup />} />
             <Route path="*" element={<Main />} />
         </Base>
-    );
+    )
 }
 
-export default App;
+export default App
