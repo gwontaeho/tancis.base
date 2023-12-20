@@ -1,22 +1,33 @@
 export const TancisRoutes = [
     {
-        name: "test",
-        base: "/test",
+        name: "Cargo",
+        base: `/ext/cgme`,
         children: [
             {
-                name: "aaa",
-                base: "/aaa",
-
+                name: "Cargo Management",
+                base: "",
                 children: [
                     {
-                        name: "bb",
-                        to: "/bb",
-                    },
-                    {
-                        name: "cc",
-                        to: "/cc",
+                        name: "Manifest Management",
+                        base: "",
+                        children: [
+                            {
+                                name: "Repacking BL",
+                                base: "/wrhs/rpck",
+                                children: [
+                                    {
+                                        name: "Repacking BL (with Item)",
+                                        to: "/cgme0411001q",
+                                    },
+                                ],
+                            },
+                        ],
                     },
                 ],
+            },
+            {
+                name: "Enforce Management",
+                base: "",
             },
         ],
     },
