@@ -3,17 +3,74 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { envs } from "@/comn/utils";
-import { useForm, useFetch, useWijmo, useCondition, usePopup, useTheme } from "@/comn/hooks";
+import { envs, utils } from "@/comn/utils";
+import { useForm, useFetch, useWijmo, useCondition, usePopup, useTheme, useModal, FormValuesType } from "@/comn/hooks";
 import { BASE, URLS, APIS, SCHEMA_FORM_RPCK_ITM } from "./services/RpckItmAppService";
 
 export const CGME0411002S = (props: any) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const modal = useModal();
     const { condition } = useCondition();
     const form = useForm({ defaultSchema: SCHEMA_FORM_RPCK_ITM, values: condition });
+    form.watch(["sameAsAbove", "cnsiTin", "cnsiNm", "cnsiTelno", "cnsiAddr"]);
 
-    const onSubmit = () => {};
+    useEffect(() => {
+        const observe = form.watch((value, { name, type }) => {
+            if (name === "sameAsAbove" && utils.equals(value[name], ["Y"])) {
+                form.setValues(
+                    {
+                        ntprTin: value.cnsiTin,
+                        ntprNm: value.cnsiNm,
+                        ntprTelno: value.cnsiTelno,
+                        ntprAddr: value.cnsiAddr,
+                    },
+                    true
+                );
+                form.setSchemas(["ntprTin", "ntprNm", "ntprTelno", "ntprAddr"], { readOnly: true });
+            } else {
+                form.setSchemas(["ntprTin", "ntprNm", "ntprTelno", "ntprAddr"], { readOnly: false });
+            }
+
+            if (
+                utils.equals(value.sameAsAbove, ["Y"]) &&
+                (name === "cnsiTin" || name === "cnsiNm" || name === "cnsiTelno" || name === "cnsiAddr")
+            ) {
+                form.setValues(
+                    {
+                        ntprTin: value.cnsiTin,
+                        ntprNm: value.cnsiNm,
+                        ntprTelno: value.cnsiTelno,
+                        ntprAddr: value.cnsiAddr,
+                    },
+                    true
+                );
+            }
+        });
+
+        return () => observe.unsubscribe();
+    }, [form, form.watch]);
+
+    const onSubmit = () => {
+        modal.openModal({
+            content: "저장하시겠습니까?",
+            onConfirm: () => {
+                APIS.saveRpckItmApp(form.getValues());
+            },
+            onCancel: () => {
+                console.log("cancel...");
+            },
+        });
+    };
+
+    const saveRpckItmApp = (data: FormValuesType) => {
+        console.log(data);
+        console.log("a");
+    };
+    const submitRpckItmApp = (data: FormValuesType) => {
+        console.log(data);
+        console.log("b");
+    };
 
     return (
         <Page>
@@ -92,39 +149,27 @@ export const CGME0411002S = (props: any) => {
                             <Group.Control {...form.schema.wrhsCd} controlSize={10}></Group.Control>
                         </Group.Row>
                     </Group.Body>
+                    <Group.Header title={"L_RPCK_ITM_LST"} titleSize={2}></Group.Header>
+                </Group>
+
+                <Group bgColor={false}>
                     <Layout direction="row">
                         <Layout.Left>
                             <Button
                                 onClick={() => {
-                                    form.reset();
+                                    navigate(URLS.cgme0411001q);
                                 }}
                             >
-                                {t("B_RESET")}
+                                {t("B_LST")}
                             </Button>
                         </Layout.Left>
                         <Layout.Right>
-                            <Button type="submit">{t("B_SRCH")}</Button>
+                            <Button onClick={form.handleSubmit(saveRpckItmApp)}>{t("B_SAVE")}</Button>
+                            <Button onClick={form.handleSubmit(submitRpckItmApp)}>{t("B_SBMT")}</Button>
                         </Layout.Right>
                     </Layout>
                 </Group>
             </form>
-            <Group bgColor={false}>
-                <Layout direction="row">
-                    <Layout.Left>
-                        <Button
-                            onClick={() => {
-                                navigate(URLS.cgme0411001q);
-                            }}
-                        >
-                            {t("B_LST")}
-                        </Button>
-                    </Layout.Left>
-                    <Layout.Right>
-                        <Button onClick={() => {}}>{t("B_SAVE")}</Button>
-                        <Button onClick={() => {}}>{t("B_SBMT")}</Button>
-                    </Layout.Right>
-                </Layout>
-            </Group>
         </Page>
     );
 };
