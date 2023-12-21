@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { envs } from "@/comn/utils";
-import { useForm, useFetch, useWijmo, useCondition, usePopup, useTheme } from "@/comn/hooks";
+import { useForm, useFetch, useWijmo, useCondition, usePopup, useTheme, FormValuesType } from "@/comn/hooks";
 import { BASE, URLS, APIS, SCHEMA_FORM_SRCH_RPCK_ITM } from "./services/RpckItmAppService";
 
 export const CGME0411001Q = (props: any) => {
@@ -13,7 +13,9 @@ export const CGME0411001Q = (props: any) => {
     const { condition } = useCondition();
     const form = useForm({ defaultSchema: SCHEMA_FORM_SRCH_RPCK_ITM, values: condition });
 
-    const onSubmit = () => {};
+    const onSubmit = (data: FormValuesType) => {
+        console.log(data);
+    };
 
     return (
         <Page>

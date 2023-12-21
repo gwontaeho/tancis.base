@@ -83,7 +83,7 @@ export const CGME0411002S = (props: any) => {
                 description={t("T_RPCK_ITM_DCLR_RGSR")}
                 id={"UI-CGME-0411-002S"}
             />
-            <form onSubmit={form.handleSubmit(onSubmit)}>
+            <form>
                 <Group>
                     <Group.Body>
                         <Group.Row>
