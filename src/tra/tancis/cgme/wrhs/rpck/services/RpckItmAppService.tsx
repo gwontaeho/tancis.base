@@ -33,6 +33,11 @@ export const APIS = {
             params: data,
         });
     },
+    saveRpckItmApp: (data: any) => {
+        return api.post(`/cgme/wrhs/rpck/rpck-itm-apps`, {
+            params: data,
+        });
+    },
     deleteRpckItm: (data: any, page: number, size: number) => {
         return api.get(`/cgme/wrhs/rpck/rpck-itm-apps?page=${page}&size=${size}`, {
             params: data,
@@ -92,7 +97,7 @@ export const SCHEMA_FORM_RPCK_ITM: FormSchemaType = {
         mblNo: { type: "text", label: "L_MBL_NO", edit: false },
         crn: { type: "text", label: "L_CRN", edit: false },
         msn: { type: "text", label: "L_MSN" },
-        cagClsfCd: { type: "text", label: "L_CAG_CLSF" },
+        cagClsfCd: { type: "select", label: "L_CAG_CLSF", area: "comnCd", comnCd: "CAG_0006" },
         blTpCd: { type: "text", label: "L_BL_TP_CD" },
         shagCd: { type: "text", label: "L_SHAG_CD" },
         exppnTin: { type: "text", label: "L_EXPPN_TIN" },
@@ -109,7 +114,7 @@ export const SCHEMA_FORM_RPCK_ITM: FormSchemaType = {
         ntprAddr: { type: "text", label: "L_NTPR_ADDR" },
         godsDesc: { type: "text", label: "L_GODS_DESC" },
         blPckgNo: { type: "number", required: true },
-        pckgUtCd: { type: "select", required: true },
+        pckgUtCd: { type: "select", required: true, select: true, area: "comnCd", comnCd: "CAG_0018" },
         blGwght: { type: "number", label: "L_BL_GWGHT", rightText: "KG", size: 4, thousandSeparator: true },
         gwghtUtCd: { type: "text", label: "L_GWGHT_UT_CD" },
         blNwght: { type: "text", label: "L_BL_NWGHT", rightText: "KG", size: 4, thousandSeparator: true },
@@ -124,7 +129,7 @@ export const SCHEMA_FORM_RPCK_ITM: FormSchemaType = {
         invcCurrCd: { type: "text", label: "L_INVC_CURR_CD" },
         frghCrge: { type: "text", label: "L_FRGH_CRGE" },
         frghCurrCd: { type: "text", label: "L_FRGH_CURR_CD" },
-        wrhsCd: { type: "code", label: "L_WRHS", edit: false, required: true },
+        wrhsCd: { type: "code", label: "L_WRHS", edit: false },
         sbmtDt: { type: "text", label: "L_SBMT_DT" },
         autrId: { type: "text", label: "L_AUTR_ID" },
         audtDt: { type: "text", label: "L_AUDT_DT" },
