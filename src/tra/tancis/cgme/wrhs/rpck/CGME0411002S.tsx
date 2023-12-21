@@ -86,6 +86,12 @@ export const CGME0411002S = (props: any) => {
                             <Group.Control {...form.schema.ntprAddr}></Group.Control>
                         </Group.Row>
                     </Group.Body>
+                    <Group.Header title={"L_WRHS"} titleSize={2}></Group.Header>
+                    <Group.Body>
+                        <Group.Row>
+                            <Group.Control {...form.schema.wrhsCd} controlSize={10}></Group.Control>
+                        </Group.Row>
+                    </Group.Body>
                     <Layout direction="row">
                         <Layout.Left>
                             <Button
