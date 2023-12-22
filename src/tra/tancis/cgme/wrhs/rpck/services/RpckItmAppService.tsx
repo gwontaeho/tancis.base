@@ -123,7 +123,7 @@ export const SCHEMA_FORM_RPCK_ITM: FormSchemaType = {
         blGvlm: { type: "text", label: "L_BL_GVLM" },
         vlmUtCd: { type: "text", label: "L_VLM_UT_CD" },
         loadPortCd: { type: "code", label: "L_LOAD_PORT", required: true, area: "comnCd", comnCd: "CAG_0018" },
-        dstnPlcCd: { type: "code", label: "L_DSTN_PLC", required: true, area: "comnCd", comnCd: "CAG_0018" },
+        dstnPlcCd: { type: "code", label: "L_DSTN_PLC", required: true, area: "cityCd" },
         dlvrPlcCd: { type: "text", label: "L_DLVR_PLC" },
         imdgCd: { type: "text", label: "L_IMDG_CD" },
         invcVal: { type: "text", label: "L_INVC_VAL" },
