@@ -104,8 +104,10 @@ export const CGME0411002S = (props: any) => {
                         </Group.Row>
                         <Group.Row>
                             <Group.Label label={"L_PCKG_NO"} required={true} />
-                            <Group.Control {...form.schema.blPckgNo} controlSize={2}></Group.Control>
-                            <Group.Control {...form.schema.pckgUtCd} controlSize={2}></Group.Control>
+                            <Group.Col>
+                                <Group.Control {...form.schema.blPckgNo} controlSize={2}></Group.Control>
+                                <Group.Control {...form.schema.pckgUtCd} controlSize={2}></Group.Control>
+                            </Group.Col>
                             <Group.Control {...form.schema.blGwght}></Group.Control>
                         </Group.Row>
                         <Group.Row>
