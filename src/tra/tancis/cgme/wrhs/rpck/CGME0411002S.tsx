@@ -172,6 +172,8 @@ export const CGME0411002S = (props: any) => {
                     </Layout>
                 </Group>
             </form>
+
+            <button onClick={() => console.log(form.getValues())}>aaaa</button>
         </Page>
     );
 };
