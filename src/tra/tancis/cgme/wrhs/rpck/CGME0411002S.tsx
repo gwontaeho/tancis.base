@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Wijmo } from "@/comn/components";
@@ -14,6 +14,7 @@ export const CGME0411002S = (props: any) => {
     const { condition } = useCondition();
     const form = useForm({ defaultSchema: SCHEMA_FORM_RPCK_ITM, values: condition });
     form.watch(["sameAsAbove", "cnsiTin", "cnsiNm", "cnsiTelno", "cnsiAddr"]);
+    const [state, setState] = useState(true);
 
     useEffect(() => {
         const observe = form.watch((value, { name, type }) => {
@@ -136,14 +137,18 @@ export const CGME0411002S = (props: any) => {
                         <Group.Row>
                             <Group.Control {...form.schema.sameAsAbove} controlSize={12}></Group.Control>
                         </Group.Row>
-                        <Group.Row>
-                            <Group.Control {...form.schema.ntprTin}></Group.Control>
-                            <Group.Control {...form.schema.ntprNm}></Group.Control>
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Control {...form.schema.ntprTelno}></Group.Control>
-                            <Group.Control {...form.schema.ntprAddr}></Group.Control>
-                        </Group.Row>
+                        {state && (
+                            <>
+                                <Group.Row>
+                                    <Group.Control {...form.schema.ntprTin}></Group.Control>
+                                    <Group.Control {...form.schema.ntprNm}></Group.Control>
+                                </Group.Row>
+                                <Group.Row>
+                                    <Group.Control {...form.schema.ntprTelno}></Group.Control>
+                                    <Group.Control {...form.schema.ntprAddr}></Group.Control>
+                                </Group.Row>
+                            </>
+                        )}
                     </Group.Body>
                     <Group.Header title={"L_WRHS"} titleSize={2}></Group.Header>
                     <Group.Body>
@@ -173,7 +178,14 @@ export const CGME0411002S = (props: any) => {
                 </Group>
             </form>
 
-            <button onClick={() => console.log(form.getValues())}>aaaa</button>
+            <button
+                onClick={() => {
+                    setState(!state);
+                    console.log(form.getValues());
+                }}
+            >
+                aaaa
+            </button>
         </Page>
     );
 };
