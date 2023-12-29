@@ -5,13 +5,13 @@ import { Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { envs } from "@/comn/utils";
 import { useForm, useFetch, useWijmo, useCondition, usePopup, useTheme } from "@/comn/hooks";
-import { BASE, URLS, APIS, SCHEMA_FORM_SRCH_RPCK_ITM } from "./services/RpckItmAppService";
+import { BASE, URLS, APIS, SF_RPCK_ITM_APP_SRCH } from "./services/RpckItmAppService";
 
 export const CGME0411003Q = (props: any) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { condition } = useCondition();
-    const form = useForm({ defaultSchema: SCHEMA_FORM_SRCH_RPCK_ITM, values: condition });
+    const form = useForm({ defaultSchema: SF_RPCK_ITM_APP_SRCH, values: condition });
 
     const onSubmit = () => {};
 

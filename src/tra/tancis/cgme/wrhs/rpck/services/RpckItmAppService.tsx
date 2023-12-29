@@ -50,7 +50,7 @@ export const APIS = {
     },
 };
 
-export const SCHEMA_FORM_SRCH_RPCK_ITM: FormSchemaType = {
+export const SF_RPCK_ITM_APP_SRCH: FormSchemaType = {
     id: "form_srch_RpckItm",
     schema: {
         frstRgsrDtmRnge: {
