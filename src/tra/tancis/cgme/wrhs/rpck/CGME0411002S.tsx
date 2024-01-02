@@ -64,10 +64,16 @@ export const CGME0411002S = () => {
             cnsiAddr: "ntprAddr",
         };
 
-        Object.entries(matched).forEach((_) => {
-            form.rpckItmApp.setValue(_[1], form.rpckItmApp.getValues(_[0]));
+        /**
+         * 현재의 ntpr값을 cnsi값과 일치
+         */
+        Object.entries(matched).forEach(([cnsi, ntpr]) => {
+            form.rpckItmApp.setValue(ntpr, form.rpckItmApp.getValues(cnsi));
         });
 
+        /**
+         * 각 cnsi필드 value의 변화를 감지하여 ntpr필드에 삽입
+         */
         const subscription = form.rpckItmApp.watch((value, { name }) => {
             switch (name) {
                 case "cnsiTin":
