@@ -4,6 +4,7 @@ import { FormSchemaType, WijmoSchemaType } from "@/comn/hooks";
 
 export const BASE = {
     path: `${envs.base}/wrhs/rpck`,
+    api: `http://localhost:8080/api/v1/wrhs/rpck/rpck-itm-app`,
     nodes: [
         { path: "/", label: "L_CAG_MGMT" },
         { path: "/wrhs/", label: "L_MNFS_MGMT" },
@@ -34,8 +35,8 @@ export const APIS = {
         });
     },
     saveRpckItmApp: (data: any) => {
-        return api.post(`/cgme/wrhs/rpck/rpck-itm-apps`, {
-            params: data,
+        return api.post(`${BASE.api}`, {
+            ...data,
         });
     },
     deleteRpckItm: (data: any, page: number, size: number) => {
@@ -48,6 +49,38 @@ export const APIS = {
             params: data,
         });
     },
+};
+
+export const SG_RPCK_ITM_APP_LIST: WijmoSchemaType = {
+    id: "grid",
+    options: { pagination: "out", isReadOnly: true },
+    head: [
+        { cells: [{ header: "L_DCLR_NO", binding: "regnCd" }] },
+        { cells: [{ header: "L_WRHS", binding: "regnNm" }] },
+        { cells: [{ header: "L_MRN", binding: "mrn" }] },
+        { cells: [{ header: "L_MSN", binding: "msn" }] },
+        { cells: [{ header: "L_MBL_NO", binding: "mblNo" }] },
+        { cells: [{ header: "L_CNTY_CD", binding: "godsDesc" }] },
+        { cells: [{ header: "L_CITY_STAT_CD", binding: "cityStatCd" }] },
+    ],
+    body: [
+        {
+            cells: [
+                {
+                    binding: "dclrNo",
+                },
+            ],
+        },
+        {
+            cells: [{ binding: "wrhsCd" }],
+        },
+        {
+            cells: [{ binding: "cntyCd", width: "*" }],
+        },
+        {
+            cells: [{ binding: "cityStatCd", width: 150 }],
+        },
+    ],
 };
 
 export const SF_RPCK_ITM_APP_SRCH: FormSchemaType = {
@@ -73,7 +106,7 @@ export const SF_RPCK_ITM_APP_SRCH: FormSchemaType = {
     },
 };
 
-export const SCHEMA_FORM_RPCK_ITM: FormSchemaType = {
+export const SF_RPCK_ITM_APP: FormSchemaType = {
     id: "form_CgmeRpckItmM",
     schema: {
         sameAsAbove: {
