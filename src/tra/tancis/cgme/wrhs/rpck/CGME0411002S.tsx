@@ -1,10 +1,24 @@
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Page, Group, Layout, Button } from "@/comn/components";
+import { useTranslation } from "react-i18next";
 import { envs } from "@/comn/utils";
+import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useToast, useFetch, useModal, useAuth } from "@/comn/hooks";
 import { BASE, URLS, APIS, SF_RPCK_ITM_APP } from "./services/RpckItmAppService";
+
+/**
+ * 페이지 구현 순서
+ *
+ * 1. method, util import 및 선언
+ * 2. form 초기화
+ * 3. fetch 초기화
+ * 4. 내부 로직 구현
+ * 5. handler 초기화
+ *
+ * 1. ui component 배치
+ * 2. schema 연결 (form, grid 등)
+ * 3. handler 연결
+ */
 
 export const CGME0411002S = () => {
     const pgeUid = "UI-CGME-0411-002S";
@@ -65,6 +79,7 @@ export const CGME0411002S = () => {
         };
 
         /**
+         * 1.
          * 현재의 ntpr값을 cnsi값과 일치
          */
         Object.entries(matched).forEach(([cnsi, ntpr]) => {
@@ -72,6 +87,7 @@ export const CGME0411002S = () => {
         });
 
         /**
+         * 2.
          * 각 cnsi필드 value의 변화를 감지하여 ntpr필드에 삽입
          */
         const subscription = form.rpckItmApp.watch((value, { name }) => {
