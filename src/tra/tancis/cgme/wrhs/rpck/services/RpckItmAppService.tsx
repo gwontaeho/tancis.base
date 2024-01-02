@@ -19,8 +19,8 @@ export const URLS = {
 };
 
 export const APIS = {
-    getRpckItmList: (data: any, page: number, size: number) => {
-        return api.get(`/cgme/wrhs/rpck/rpck-itm-apps?page=${page}&size=${size}`, {
+    getRpckItmAppList: (data: any, page: number, size: number) => {
+        return api.get(`${BASE.api}?page=${page}&size=${size}`, {
             params: data,
         });
     },
@@ -55,30 +55,51 @@ export const SG_RPCK_ITM_APP_LIST: WijmoSchemaType = {
     id: "grid",
     options: { pagination: "out", isReadOnly: true },
     head: [
-        { cells: [{ header: "L_DCLR_NO", binding: "regnCd" }] },
-        { cells: [{ header: "L_WRHS", binding: "regnNm" }] },
+        { cells: [{ header: "L_DCLR_NO" }] },
+        { cells: [{ header: "L_WRHS", binding: "wrhsCd" }] },
         { cells: [{ header: "L_MRN", binding: "mrn" }] },
         { cells: [{ header: "L_MSN", binding: "msn" }] },
         { cells: [{ header: "L_MBL_NO", binding: "mblNo" }] },
-        { cells: [{ header: "L_CNTY_CD", binding: "godsDesc" }] },
-        { cells: [{ header: "L_CITY_STAT_CD", binding: "cityStatCd" }] },
+        { cells: [{ header: "L_GODS_DESC", binding: "godsDesc" }] },
+        { cells: [{ header: "L_PCKG_NO", binding: "blPckgNo" }] },
+        { cells: [{ header: "L_GWGHT", binding: "blGwght" }] },
+        { cells: [{ header: "L_PRCSS_STAT", binding: "prcssStatCd" }] },
     ],
     body: [
         {
             cells: [
                 {
-                    binding: "dclrNo",
+                    render: (cellData) => {
+                        return `${cellData.rowValues.dcltTin}-${cellData.rowValues.dclrYy}-${cellData.rowValues.prcsTpCd}-${cellData.rowValues.dclrSrno}`;
+                    },
+                    binding: "dcltTin",
+                    width: 200,
                 },
             ],
         },
         {
-            cells: [{ binding: "wrhsCd" }],
+            cells: [{ binding: "wrhsCd", width: 150 }],
         },
         {
-            cells: [{ binding: "cntyCd", width: "*" }],
+            cells: [{ binding: "mrn", width: 100 }],
         },
         {
-            cells: [{ binding: "cityStatCd", width: 150 }],
+            cells: [{ binding: "msn", width: 100 }],
+        },
+        {
+            cells: [{ binding: "mblNo", width: 100 }],
+        },
+        {
+            cells: [{ binding: "godsDesc", width: "*" }],
+        },
+        {
+            cells: [{ binding: "blPckgNo", width: 100 }],
+        },
+        {
+            cells: [{ binding: "blGwght", width: 100 }],
+        },
+        {
+            cells: [{ binding: "prcssStatCd", width: 100 }],
         },
     ],
 };
@@ -89,8 +110,8 @@ export const SF_RPCK_ITM_APP_SRCH: FormSchemaType = {
         frstRgsrDtmRnge: {
             type: "daterange",
             label: "L_RGSR_DT",
-            start: { name: "frstRgsrDtmStrt", required: true },
-            end: { name: "frstRgsrDtmEnd", required: true },
+            start: { name: "frstRgsrDtmStrt" },
+            end: { name: "frstRgsrDtmEnd" },
             rangeButton: 0,
             required: true,
         },

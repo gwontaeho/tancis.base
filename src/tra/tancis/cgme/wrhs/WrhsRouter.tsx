@@ -7,6 +7,7 @@ export const WrhsRouter = () => {
         <Routes>
             <Route path="/rpck/cgme0411001q" element={<CGME0411001Q />} />
             <Route path="/rpck/cgme0411002s" element={<CGME0411002S />} />
+            <Route path="/rpck/cgme0411002s/:id" element={<CGME0411002S />} />
         </Routes>
     );
 };
