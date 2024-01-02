@@ -128,7 +128,7 @@ export const SF_RPCK_ITM_APP_SRCH: FormSchemaType = {
 export const SF_RPCK_ITM_APP: FormSchemaType = {
     id: "form_CgmeRpckItmM",
     schema: {
-        rprtNo: { type: "text", label: "L_RPRT_NO", edit: false },
+        rprtNo: { type: "text", label: "L_RPRT_NO" },
         dcltTin: { type: "text", label: "L_DCLT_TIN" },
         dclrYy: { type: "text", label: "L_DCLR_YY" },
         prcsTpCd: { type: "text", label: "L_PRCS_TP_CD" },

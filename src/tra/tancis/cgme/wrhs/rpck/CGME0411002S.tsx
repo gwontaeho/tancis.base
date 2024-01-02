@@ -65,6 +65,7 @@ export const CGME0411002S = () => {
                 console.log(data);
                 console.log(data.rpckItmAppInfo.content);
                 form.rpckItmApp.setValues({ ...data.rpckItmAppInfo.content, rprtNo: id });
+                console.log(form.rpckItmApp.getValues());
             },
             onError: () => {},
         }),
