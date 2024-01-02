@@ -1,22 +1,37 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import { Wijmo } from "@/comn/components";
+import { envs } from "@/comn/utils";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { envs, utils } from "@/comn/utils";
-import { useForm, useToast, useFetch, usePopup, useStore, useModal, useAuth } from "@/comn/hooks";
+import { useForm, useToast, useFetch, useModal, useAuth } from "@/comn/hooks";
 import { BASE, URLS, APIS, SF_RPCK_ITM_APP } from "./services/RpckItmAppService";
 
-export const CGME0411002S = (props: any) => {
+/**
+ * 페이지 구현 순서
+ *
+ * 1. method, util import 및 선언
+ * 2. form 초기화
+ * 3. fetch 초기화
+ * 4. 내부 로직 구현
+ * 5. handler 초기화
+ *
+ * 1. ui component 배치
+ * 2. schema 연결 (form, grid 등)
+ * 3. handler 연결
+ */
+
+export const CGME0411002S = () => {
     const pgeUid = "UI-CGME-0411-002S";
-    const { t } = useTranslation();
+
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const modal = useModal();
-    const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();
-    const { close, postMessage } = usePopup();
     const auth = useAuth();
 
+    /**
+     * form 초기화
+     */
     const form = {
         rpckItmApp: useForm({
             defaultSchema: SF_RPCK_ITM_APP,
@@ -24,82 +39,116 @@ export const CGME0411002S = (props: any) => {
         }),
     };
 
-    form.rpckItmApp.watch(["sameAsAbove", "cnsiTin", "cnsiNm", "cnsiTelno", "cnsiAddr"]);
-    const [state, setState] = useState(true);
-
-    useEffect(() => {
-        const observe = form.rpckItmApp.watch((value, { name, type }) => {
-            if (name === "sameAsAbove" && utils.equals(value[name], ["Y"])) {
-                form.rpckItmApp.setValues(
-                    {
-                        ntprTin: value.cnsiTin,
-                        ntprNm: value.cnsiNm,
-                        ntprTelno: value.cnsiTelno,
-                        ntprAddr: value.cnsiAddr,
-                    },
-                    true
-                );
-                form.rpckItmApp.setSchemas(["ntprTin", "ntprNm", "ntprTelno", "ntprAddr"], { readOnly: true });
-            } else {
-                form.rpckItmApp.setSchemas(["ntprTin", "ntprNm", "ntprTelno", "ntprAddr"], { readOnly: false });
-            }
-
-            if (
-                utils.equals(value.sameAsAbove, ["Y"]) &&
-                (name === "cnsiTin" || name === "cnsiNm" || name === "cnsiTelno" || name === "cnsiAddr")
-            ) {
-                form.rpckItmApp.setValues(
-                    {
-                        ntprTin: value.cnsiTin,
-                        ntprNm: value.cnsiNm,
-                        ntprTelno: value.cnsiTelno,
-                        ntprAddr: value.cnsiAddr,
-                    },
-                    true
-                );
-            }
-        });
-
-        return () => observe.unsubscribe();
-    }, [form.rpckItmApp, form.rpckItmApp.watch]);
-
+    /**
+     * fetch 초기화
+     */
     const fetch = {
         saveRpckItmApp: useFetch({
-            api: (data = form.rpckItmApp.getValues()) => {
-                return APIS.saveRpckItmApp(data);
+            /**
+             * fetch 인자로 data를 전달받아 tin과 함께 호출
+             */
+            api: (data) => APIS.saveRpckItmApp({ ...data, dcltTin: auth.get("tin") }),
+            onSuccess: () => {
+                toast.showToast({ type: "success", content: "success" });
+                handler.navigateToList();
             },
-            onSuccess: () => {},
             onError: () => {},
         }),
     };
 
+    /**
+     * 수하인 - 통지처 값 동기화 로직
+     */
+    const [sameAsAbove, setSameAsAbove] = useState(false);
+    useEffect(() => {
+        /**
+         * sameAsAbove 값에 따라 해당 필드 readOnly
+         */
+        form.rpckItmApp.setSchemas(["ntprTin", "ntprNm", "ntprTelno", "ntprAddr"], { readOnly: sameAsAbove });
+        if (!sameAsAbove) return;
+
+        /**
+         * 동기화 적용 시 로직
+         * (sameAsAbove=true)
+         */
+        const matched = {
+            cnsiTin: "ntprTin",
+            cnsiNm: "ntprNm",
+            cnsiTelno: "ntprTelno",
+            cnsiAddr: "ntprAddr",
+        };
+
+        /**
+         * 1.
+         * 현재의 ntpr값을 cnsi값과 일치
+         */
+        Object.entries(matched).forEach(([cnsi, ntpr]) => {
+            form.rpckItmApp.setValue(ntpr, form.rpckItmApp.getValues(cnsi));
+        });
+
+        /**
+         * 2.
+         * 각 cnsi필드 value의 변화를 감지하여 ntpr필드에 삽입
+         */
+        const subscription = form.rpckItmApp.watch((value, { name }) => {
+            switch (name) {
+                case "cnsiTin":
+                case "cnsiNm":
+                case "cnsiTelno":
+                case "cnsiAddr":
+                    form.rpckItmApp.setValue(matched[name], value[name]);
+            }
+        });
+
+        /**
+         * clean up
+         */
+        return () => {
+            subscription.unsubscribe();
+        };
+    }, [sameAsAbove]);
+
+    /**
+     * event handler
+     */
     const handler = {
-        saveRpckItmApp: () => {
-            form.rpckItmApp.handleSubmit(
-                () => {
-                    if (!form.rpckItmApp.getValues("dcltTin")) form.rpckItmApp.setValue("dcltTin", auth.get("tin"));
-                    modal.openModal({
-                        content: t("msg.00101"),
-                        onConfirm: () => {
-                            fetch.saveRpckItmApp.fetch();
-                        },
-                    });
-                },
-                () => {
-                    toast.showToast({ type: "warning", content: "msg.00002" });
-                }
-            )();
-        },
-        submitRpckItmApp: () => {
-            form.rpckItmApp.handleSubmit(
-                () => {
-                    fetch.saveRpckItmApp.fetch();
-                },
-                () => {
-                    toast.showToast({ type: "warning", content: "msg.00002" });
-                }
-            )();
-        },
+        /**
+         * 목록으로 이동
+         */
+        navigateToList: () => navigate(URLS.cgme0411001q),
+
+        /**
+         * 제출
+         * validation 성공 시 open modal,
+         * modal confirm 시 fetch
+         * validation 실패 시 toast
+         */
+        saveRpckItmApp: form.rpckItmApp.handleSubmit(
+            (data) => {
+                modal.openModal({
+                    onConfirm: () => {
+                        fetch.saveRpckItmApp.fetch(data);
+                    },
+                });
+            },
+            () => {
+                toast.showToast({ type: "warning", content: "msg.00002" });
+            }
+        ),
+
+        /**
+         * 제출
+         * validation 성공 시 fetch
+         * validation 실패 시 toast
+         */
+        submitRpckItmApp: form.rpckItmApp.handleSubmit(
+            (data) => {
+                fetch.saveRpckItmApp.fetch(data);
+            },
+            () => {
+                toast.showToast({ type: "warning", content: "msg.00002" });
+            }
+        ),
     };
 
     return (
@@ -117,72 +166,73 @@ export const CGME0411002S = (props: any) => {
                 <Group>
                     <Group.Body>
                         <Group.Row>
-                            <Group.Control {...form.rpckItmApp.schema.rprtNo}></Group.Control>
-                            <Group.Control {...form.rpckItmApp.schema.prcssStatCd}></Group.Control>
+                            <Group.Control {...form.rpckItmApp.schema.rprtNo} />
+                            <Group.Control {...form.rpckItmApp.schema.prcssStatCd} />
                         </Group.Row>
                         <Group.Row>
-                            <Group.Control {...form.rpckItmApp.schema.mblNo}></Group.Control>
-                            <Group.Control {...form.rpckItmApp.schema.crn}></Group.Control>
+                            <Group.Control {...form.rpckItmApp.schema.mblNo} />
+                            <Group.Control {...form.rpckItmApp.schema.crn} />
                         </Group.Row>
                         <Group.Row>
-                            <Group.Control {...form.rpckItmApp.schema.cagClsfCd}></Group.Control>
-                            <Group.Control {...form.rpckItmApp.schema.dstnPlcCd}></Group.Control>
+                            <Group.Control {...form.rpckItmApp.schema.cagClsfCd} />
+                            <Group.Control {...form.rpckItmApp.schema.dstnPlcCd} />
                         </Group.Row>
                         <Group.Row>
-                            <Group.Control {...form.rpckItmApp.schema.godsDesc}></Group.Control>
-                            <Group.Control {...form.rpckItmApp.schema.loadPortCd}></Group.Control>
+                            <Group.Control {...form.rpckItmApp.schema.godsDesc} />
+                            <Group.Control {...form.rpckItmApp.schema.loadPortCd} />
                         </Group.Row>
                         <Group.Row>
                             <Group.Label label={"L_PCKG_NO"} required={true} />
                             <Group.Col>
-                                <Group.Control {...form.rpckItmApp.schema.blPckgNo} controlSize={2}></Group.Control>
-                                <Group.Control {...form.rpckItmApp.schema.pckgUtCd} controlSize={2}></Group.Control>
+                                <Group.Control {...form.rpckItmApp.schema.blPckgNo} controlSize={2} />
+                                <Group.Control {...form.rpckItmApp.schema.pckgUtCd} controlSize={2} />
                             </Group.Col>
-                            <Group.Control {...form.rpckItmApp.schema.blGwght}></Group.Control>
+                            <Group.Control {...form.rpckItmApp.schema.blGwght} />
                         </Group.Row>
                         <Group.Row>
-                            <Group.Control {...form.rpckItmApp.schema.pckgTpCd}></Group.Control>
-                            <Group.Control {...form.rpckItmApp.schema.blNwght}></Group.Control>
+                            <Group.Control {...form.rpckItmApp.schema.pckgTpCd} />
+                            <Group.Control {...form.rpckItmApp.schema.blNwght} />
                         </Group.Row>
                     </Group.Body>
                     <Group.Header title={"L_CO"} titleSize={2}></Group.Header>
                     <Group.Body>
                         <Group.Row>
-                            <Group.Control {...form.rpckItmApp.schema.exppnTin}></Group.Control>
-                            <Group.Control {...form.rpckItmApp.schema.exppnNm}></Group.Control>
+                            <Group.Control {...form.rpckItmApp.schema.exppnTin} />
+                            <Group.Control {...form.rpckItmApp.schema.exppnNm} />
                         </Group.Row>
                         <Group.Row>
-                            <Group.Control {...form.rpckItmApp.schema.exppnTelno}></Group.Control>
-                            <Group.Control {...form.rpckItmApp.schema.exppnAddr}></Group.Control>
+                            <Group.Control {...form.rpckItmApp.schema.exppnTelno} />
+                            <Group.Control {...form.rpckItmApp.schema.exppnAddr} />
                         </Group.Row>
                         <Group.Row>
-                            <Group.Control {...form.rpckItmApp.schema.cnsiTin}></Group.Control>
-                            <Group.Control {...form.rpckItmApp.schema.cnsiNm}></Group.Control>
+                            <Group.Control {...form.rpckItmApp.schema.cnsiTin} />
+                            <Group.Control {...form.rpckItmApp.schema.cnsiNm} />
                         </Group.Row>
                         <Group.Row>
-                            <Group.Control {...form.rpckItmApp.schema.cnsiTelno}></Group.Control>
-                            <Group.Control {...form.rpckItmApp.schema.cnsiAddr}></Group.Control>
+                            <Group.Control {...form.rpckItmApp.schema.cnsiTelno} />
+                            <Group.Control {...form.rpckItmApp.schema.cnsiAddr} />
                         </Group.Row>
                         <Group.Row>
-                            <Group.Control {...form.rpckItmApp.schema.sameAsAbove} controlSize={12}></Group.Control>
+                            <Group.Control
+                                type="boolean"
+                                inputLabel="L_SAME_AS_ABOVE"
+                                value={sameAsAbove}
+                                onChange={(value) => setSameAsAbove(value)}
+                            />
                         </Group.Row>
-                        {state && (
-                            <>
-                                <Group.Row>
-                                    <Group.Control {...form.rpckItmApp.schema.ntprTin}></Group.Control>
-                                    <Group.Control {...form.rpckItmApp.schema.ntprNm}></Group.Control>
-                                </Group.Row>
-                                <Group.Row>
-                                    <Group.Control {...form.rpckItmApp.schema.ntprTelno}></Group.Control>
-                                    <Group.Control {...form.rpckItmApp.schema.ntprAddr}></Group.Control>
-                                </Group.Row>
-                            </>
-                        )}
+                        <Group.Row>
+                            <Group.Control {...form.rpckItmApp.schema.ntprTin} />
+                            <Group.Control {...form.rpckItmApp.schema.ntprNm} />
+                        </Group.Row>
+                        <Group.Row>
+                            <Group.Control {...form.rpckItmApp.schema.ntprTelno} />
+                            <Group.Control {...form.rpckItmApp.schema.ntprAddr} />
+                        </Group.Row>
                     </Group.Body>
                     <Group.Header title={"L_WRHS"} titleSize={2}></Group.Header>
                     <Group.Body>
                         <Group.Row>
-                            <Group.Control {...form.rpckItmApp.schema.wrhsCd} controlSize={10}></Group.Control>
+                            <Group.Control {...form.rpckItmApp.schema.wrhsCd} controlSize={10} />
                         </Group.Row>
                     </Group.Body>
                     <Group.Header title={"L_RPCK_ITM_LST"} titleSize={2}></Group.Header>
@@ -191,42 +241,15 @@ export const CGME0411002S = (props: any) => {
                 <Group bgColor={false}>
                     <Layout direction="row">
                         <Layout.Left>
-                            <Button
-                                onClick={() => {
-                                    navigate(URLS.cgme0411001q);
-                                }}
-                            >
-                                {t("B_LST")}
-                            </Button>
+                            <Button onClick={handler.navigateToList}>{t("B_LST")}</Button>
                         </Layout.Left>
                         <Layout.Right>
-                            <Button
-                                onClick={() => {
-                                    handler.saveRpckItmApp();
-                                }}
-                            >
-                                {t("B_SAVE")}
-                            </Button>
-                            <Button
-                                onClick={() => {
-                                    handler.submitRpckItmApp();
-                                }}
-                            >
-                                {t("B_SBMT")}
-                            </Button>
+                            <Button onClick={handler.saveRpckItmApp}>{t("B_SAVE")}</Button>
+                            <Button onClick={handler.submitRpckItmApp}>{t("B_SBMT")}</Button>
                         </Layout.Right>
                     </Layout>
                 </Group>
             </form>
-
-            <button
-                onClick={() => {
-                    setState(!state);
-                    console.log(form.rpckItmApp.getValues());
-                }}
-            >
-                aaaa
-            </button>
         </Page>
     );
 };
