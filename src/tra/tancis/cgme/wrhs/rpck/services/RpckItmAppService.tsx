@@ -4,7 +4,7 @@ import { FormSchemaType, WijmoSchemaType } from "@/comn/hooks";
 
 export const BASE = {
     path: `${envs.base}/wrhs/rpck`,
-    api: `http://localhost:8080/api/v1/wrhs/rpck/rpck-itm-app`,
+    api: `http://192.168.194.202:8080/api/v1/wrhs/rpck/rpck-itm-app`,
     nodes: [
         { path: "/", label: "L_CAG_MGMT" },
         { path: "/wrhs/", label: "L_MNFS_MGMT" },
@@ -109,15 +109,6 @@ export const SF_RPCK_ITM_APP_SRCH: FormSchemaType = {
 export const SF_RPCK_ITM_APP: FormSchemaType = {
     id: "form_CgmeRpckItmM",
     schema: {
-        sameAsAbove: {
-            type: "checkbox",
-            options: [
-                {
-                    label: "L_SAME_AS_ABOVE",
-                    value: "Y",
-                },
-            ],
-        },
         rprtNo: { type: "text", label: "L_RPRT_NO", edit: false },
         dcltTin: { type: "text", label: "L_DCLT_TIN" },
         dclrYy: { type: "text", label: "L_DCLR_YY" },
