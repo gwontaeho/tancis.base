@@ -24,10 +24,8 @@ export const APIS = {
             params: data,
         });
     },
-    getRpckItm: (data: any, page: number, size: number) => {
-        return api.get(`/cgme/wrhs/rpck/rpck-itm-apps?page=${page}&size=${size}`, {
-            params: data,
-        });
+    getRpckItmApp: (id: any) => {
+        return api.get(`${BASE.api}/${id}`);
     },
     insertRpckItm: (data: any, page: number, size: number) => {
         return api.get(`/cgme/wrhs/rpck/rpck-itm-apps?page=${page}&size=${size}`, {

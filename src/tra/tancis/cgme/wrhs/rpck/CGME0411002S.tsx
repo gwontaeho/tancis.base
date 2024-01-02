@@ -28,6 +28,7 @@ export const CGME0411002S = () => {
     const modal = useModal();
     const toast = useToast();
     const auth = useAuth();
+    const { id } = useParams();
 
     /**
      * form 초기화
@@ -51,6 +52,19 @@ export const CGME0411002S = () => {
             onSuccess: () => {
                 toast.showToast({ type: "success", content: "success" });
                 handler.navigateToList();
+            },
+            onError: () => {},
+        }),
+        getRpckItmApp: useFetch({
+            /**
+             * fetch 인자로 data를 전달받아 tin과 함께 호출
+             */
+            api: (data) => APIS.getRpckItmApp(id),
+            enabled: !!id,
+            onSuccess: (data) => {
+                console.log(data);
+                console.log(data.rpckItmAppInfo.content);
+                form.rpckItmApp.setValues({ ...data.rpckItmAppInfo.content, rprtNo: id });
             },
             onError: () => {},
         }),
