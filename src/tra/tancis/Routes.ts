@@ -1,7 +1,7 @@
 export const TancisRoutes = [
     {
         name: "Cargo",
-        base: `/ext/cgme`,
+        base: process.env.REACT_APP_BASE,
         children: [
             {
                 name: "Cargo Management",
