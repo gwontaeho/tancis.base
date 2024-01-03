@@ -1,6 +1,7 @@
 import { api } from "@/comn";
 import { comnEnvs } from "@/comn/utils";
-import { FormSchemaType, WijmoSchemaType } from "@/comn/hooks";
+import { TFormSchema } from "@/comn/hooks";
+import { WijmoSchemaType } from "@/comn/hooks";
 
 export const BASE = {
     path: `${comnEnvs.base}/wrhs/rpck`,
@@ -95,7 +96,7 @@ export const SG_RPCK_ITM_APP_LIST: WijmoSchemaType = {
     ],
 };
 
-export const SF_RPCK_ITM_APP_SRCH: FormSchemaType = {
+export const SF_RPCK_ITM_APP_SRCH: TFormSchema = {
     id: "form_srch_RpckItm",
     schema: {
         frstRgsrDtmRnge: {
@@ -118,7 +119,7 @@ export const SF_RPCK_ITM_APP_SRCH: FormSchemaType = {
     },
 };
 
-export const SF_RPCK_ITM_APP: FormSchemaType = {
+export const SF_RPCK_ITM_APP: TFormSchema = {
     id: "form_CgmeRpckItmM",
     schema: {
         rprtNo: { type: "text", label: "L_RPRT_NO" },
