@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import { envs } from "@/comn/utils";
-import { WrhsRouter } from "@/tra/tancis/cgme/wrhs/WrhsRouter";
+import { WrhsRouter } from "@/tra/tancis/cgme/router/WrhsRouter";
 
 export const Main = () => {
     return (

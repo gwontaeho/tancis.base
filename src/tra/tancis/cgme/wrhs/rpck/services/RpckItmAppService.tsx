@@ -27,31 +27,24 @@ export const APIS = {
     getRpckItmApp: (id: any) => {
         return api.get(`${BASE.api}/${id}`);
     },
-    insertRpckItm: (data: any, page: number, size: number) => {
-        return api.get(`/cgme/wrhs/rpck/rpck-itm-apps?page=${page}&size=${size}`, {
-            params: data,
-        });
-    },
     saveRpckItmApp: (data: any) => {
         return api.post(`${BASE.api}`, {
             ...data,
         });
     },
-    deleteRpckItm: (data: any, page: number, size: number) => {
-        return api.get(`/cgme/wrhs/rpck/rpck-itm-apps?page=${page}&size=${size}`, {
-            params: data,
+    submitRpckItmApp: (data: any) => {
+        return api.post(`${BASE.api}`, {
+            ...data,
         });
     },
-    updateRpckItm: (data: any, page: number, size: number) => {
-        return api.get(`/cgme/wrhs/rpck/rpck-itm-apps?page=${page}&size=${size}`, {
-            params: data,
-        });
+    deleteRpckItmApp: (dclrNos: any) => {
+        return api.delete(`${BASE.api}/${dclrNos}`);
     },
 };
 
 export const SG_RPCK_ITM_APP_LIST: WijmoSchemaType = {
     id: "grid",
-    options: { pagination: "out", isReadOnly: true },
+    options: { pagination: "out", isReadOnly: true, checkbox: true },
     head: [
         { cells: [{ header: "L_DCLR_NO" }] },
         { cells: [{ header: "L_WRHS", binding: "wrhsCd" }] },
@@ -70,7 +63,7 @@ export const SG_RPCK_ITM_APP_LIST: WijmoSchemaType = {
                     render: (cellData) => {
                         return `${cellData.rowValues.dcltTin}-${cellData.rowValues.dclrYy}-${cellData.rowValues.prcsTpCd}-${cellData.rowValues.dclrSrno}`;
                     },
-                    binding: "dcltTin",
+                    binding: `dclrNo`,
                     width: 200,
                 },
             ],

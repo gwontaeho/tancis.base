@@ -5,25 +5,18 @@ import { useTranslation } from "react-i18next";
 import { Wijmo } from "@/comn/components";
 import { utils, envs } from "@/comn/utils";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import {
-    useForm,
-    useFetch,
-    useWijmo,
-    useCondition,
-    usePopup,
-    useTheme,
-    useStore,
-    FormValuesType,
-    useToast,
-} from "@/comn/hooks";
+import { useForm, useFetch, useWijmo, useModal, useStore, FormValuesType, useToast } from "@/comn/hooks";
 import { BASE, URLS, APIS, SG_RPCK_ITM_APP_LIST, SF_RPCK_ITM_APP_SRCH } from "./services/RpckItmAppService";
 
 export const CGME0411001Q = (props: any) => {
     const pgeUid = "CGME0411001Q";
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const modal = useModal();
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();
+
+    console.log(pgeStore);
 
     const form = {
         rpckItmAppSrch: useForm({
@@ -61,6 +54,17 @@ export const CGME0411001Q = (props: any) => {
                 });
             },
         }),
+        deleteRpckItmApp: useFetch({
+            api: (dclrNos) => APIS.deleteRpckItmApp(dclrNos),
+            onSuccess: () => {
+                toast.showToast({ type: "success", content: "msg.00003" });
+                modal.openModal({ content: "msg.00003" });
+                handler.getRpckItmAppLst();
+            },
+            onError: () => {
+                modal.openModal({ content: "msg.00003" });
+            },
+        }),
     };
 
     const handler = {
@@ -75,11 +79,24 @@ export const CGME0411001Q = (props: any) => {
                 }
             )();
         },
+        deleteRpckItmApp: () => {
+            const seltLst: any[] = grid.rpckItmAppLst.getChecked() || [];
+            if (utils.isEmpty(seltLst)) {
+                modal.openModal({ content: "msg.00004" });
+                return;
+            }
+
+            const dclrNos: string[] = [];
+            seltLst.forEach((item) => {
+                dclrNos.push(`${item.dcltTin}-${item.dclrYy}-${item.prcsTpCd}-${item.dclrSrno}`);
+            });
+
+            fetch.deleteRpckItmApp.fetch(dclrNos.join(","));
+        },
         click_Grid_RpckItmAppLst: {
-            dcltTin: (data: any) => {
-                navigate(
-                    `${URLS.cgme0411002s}/${data.rowValues.dcltTin}-${data.rowValues.dclrYy}-${data.rowValues.prcsTpCd}-${data.rowValues.dclrSrno}`
-                );
+            dclrNo: (data: any) => {
+                const dclrNo = `${data.rowValues.dcltTin}-${data.rowValues.dclrYy}-${data.rowValues.prcsTpCd}-${data.rowValues.dclrSrno}`;
+                navigate(`${URLS.cgme0411002s}/${dclrNo}`);
             },
         },
     };
@@ -110,27 +127,35 @@ export const CGME0411001Q = (props: any) => {
                     <Layout direction="row">
                         <Layout.Left>
                             <Button
+                                as={"reset"}
                                 onClick={() => {
                                     form.rpckItmAppSrch.reset();
                                 }}
-                            >
-                                {t("B_RESET")}
-                            </Button>
+                            ></Button>
                         </Layout.Left>
                         <Layout.Right>
                             <Button
+                                as="search"
                                 onClick={() => {
                                     handler.getRpckItmAppLst();
                                 }}
-                            >
-                                {t("B_SRCH")}
-                            </Button>
+                            ></Button>
                         </Layout.Right>
                     </Layout>
                 </Group>
             </form>
 
             <Group>
+                <Layout direction="row">
+                    <Layout.Right>
+                        <Button
+                            as="delete"
+                            onClick={() => {
+                                handler.deleteRpckItmApp();
+                            }}
+                        ></Button>
+                    </Layout.Right>
+                </Layout>
                 <Wijmo
                     {...grid.rpckItmAppLst.grid}
                     data={fetch.getRpckItmAppLst.data?.rpckItmAppList}
