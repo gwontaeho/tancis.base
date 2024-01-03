@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Wijmo } from "@/comn/components";
-import { utils, envs } from "@/comn/utils";
+import { comnUtils, comnEnvs } from "@/comn/utils";
 //import {} from "@/tra/tancis/cgme/comn";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useFetch, useWijmo, useModal, useStore, useToast } from "@/comn/hooks";
@@ -42,7 +42,7 @@ export const CGME0411001Q = (props: any) => {
             api: (page = grid.rpckItmAppLst.page) => {
                 return APIS.getRpckItmAppList(form.rpckItmAppSrch.getValues(), page, grid.rpckItmAppLst.size);
             },
-            enabled: utils.isEmpty(form.rpckItmAppSrch.errors) && form.rpckItmAppSrch.isSubmitted,
+            enabled: comnUtils.isEmpty(form.rpckItmAppSrch.errors) && form.rpckItmAppSrch.isSubmitted,
             key: [grid.rpckItmAppLst.page, grid.rpckItmAppLst.size],
             onSuccess: () => {
                 setStore(pgeUid, {
@@ -80,7 +80,7 @@ export const CGME0411001Q = (props: any) => {
         },
         deleteRpckItmApp: () => {
             const seltLst: any[] = grid.rpckItmAppLst.getChecked() || [];
-            if (utils.isEmpty(seltLst)) {
+            if (comnUtils.isEmpty(seltLst)) {
                 modal.openModal({ content: "msg.00004" });
                 return;
             }
@@ -107,7 +107,7 @@ export const CGME0411001Q = (props: any) => {
     return (
         <Page>
             <Page.Navigation
-                base={envs.base}
+                base={comnEnvs.base}
                 nodes={[...BASE.nodes, { path: "/wrhs/rpck/cgme0411001q", label: "T_RPCK_ITM_DCLR_LST" }]}
             />
             <Page.Header title={t("T_RPCK_ITM_DCLR_LST")} description={t("T_RPCK_ITM_DCLR_LST")} id={pgeUid} />

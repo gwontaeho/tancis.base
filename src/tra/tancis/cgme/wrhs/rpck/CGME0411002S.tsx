@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { envs } from "@/comn/utils";
+import { comnEnvs } from "@/comn/utils";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useToast, useFetch, useModal, useAuth } from "@/comn/hooks";
 import { BASE, URLS, APIS, SF_RPCK_ITM_APP } from "./services/RpckItmAppService";
@@ -169,7 +169,7 @@ export const CGME0411002S = () => {
     return (
         <Page>
             <Page.Navigation
-                base={envs.base}
+                base={comnEnvs.base}
                 nodes={[...BASE.nodes, { path: "/wrhs/rpck/cgme0411002s", label: "T_RPCK_ITM_DCLR_RGSR" }]}
             />
             <Page.Header

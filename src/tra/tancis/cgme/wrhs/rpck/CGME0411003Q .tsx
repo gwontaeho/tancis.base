@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { envs } from "@/comn/utils";
+import { comnEnvs } from "@/comn/utils";
 import { useForm, useFetch, useWijmo, useCondition, usePopup, useTheme } from "@/comn/hooks";
 import { BASE, URLS, APIS, SF_RPCK_ITM_APP_SRCH } from "./services/RpckItmAppService";
 
@@ -18,7 +18,7 @@ export const CGME0411003Q = (props: any) => {
     return (
         <Page>
             <Page.Navigation
-                base={envs.base}
+                base={comnEnvs.base}
                 nodes={[...BASE.nodes, { path: "/wrhs/rpck/cgme0411001q", label: "T_RPCK_ITM_DCLR_LST" }]}
             />
             <Page.Header

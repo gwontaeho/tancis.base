@@ -1,9 +1,9 @@
 import { api } from "@/comn";
-import { envs } from "@/comn/utils";
+import { comnEnvs } from "@/comn/utils";
 import { FormSchemaType, WijmoSchemaType } from "@/comn/hooks";
 
 export const BASE = {
-    path: `${envs.base}/wrhs/rpck`,
+    path: `${comnEnvs.base}/wrhs/rpck`,
     api: `http://192.168.194.202:8080/api/v1/wrhs/rpck/rpck-itm-app`,
     nodes: [
         { path: "/", label: "L_CAG_MGMT" },
