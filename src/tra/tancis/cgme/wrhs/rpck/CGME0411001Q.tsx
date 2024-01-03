@@ -5,21 +5,7 @@ import { Wijmo } from "@/comn/components";
 import { comnUtils, comnEnvs } from "@/comn/utils";
 //import {} from "@/tra/tancis/cgme/comn";
 import { Page, Group, Layout, Button } from "@/comn/components";
-<<<<<<< HEAD
-import {
-    useForm,
-    useFetch,
-    useWijmo,
-    useCondition,
-    usePopup,
-    useTheme,
-    useStore,
-    TFormValues,
-    useToast,
-} from "@/comn/hooks";
-=======
 import { useForm, useFetch, useWijmo, useModal, useStore, useToast } from "@/comn/hooks";
->>>>>>> 3f363bf46a07439b366c5d1be677c353bd61decb
 import { BASE, URLS, APIS, SG_RPCK_ITM_APP_LIST, SF_RPCK_ITM_APP_SRCH } from "./services/RpckItmAppService";
 
 export const CGME0411001Q = (props: any) => {

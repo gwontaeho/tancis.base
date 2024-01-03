@@ -1,11 +1,7 @@
 import { api } from "@/comn";
-<<<<<<< HEAD
-import { envs } from "@/comn/utils";
-import { TFormSchema, WijmoSchemaType } from "@/comn/hooks";
-=======
 import { comnEnvs } from "@/comn/utils";
-import { FormSchemaType, WijmoSchemaType } from "@/comn/hooks";
->>>>>>> 3f363bf46a07439b366c5d1be677c353bd61decb
+import { TFormSchema } from "@/comn/hooks";
+import { WijmoSchemaType } from "@/comn/hooks";
 
 export const BASE = {
     path: `${comnEnvs.base}/wrhs/rpck`,
