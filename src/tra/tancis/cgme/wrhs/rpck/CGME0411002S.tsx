@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { envs } from "@/comn/utils";
+import { comnEnvs } from "@/comn/utils";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { useForm, useToast, useFetch, useModal, useAuth } from "@/comn/hooks";
 import { BASE, URLS, APIS, SF_RPCK_ITM_APP } from "./services/RpckItmAppService";
@@ -28,7 +28,7 @@ export const CGME0411002S = () => {
     const modal = useModal();
     const toast = useToast();
     const auth = useAuth();
-    const { id } = useParams();
+    const { dclrNo } = useParams();
 
     /**
      * form 초기화
@@ -59,12 +59,12 @@ export const CGME0411002S = () => {
             /**
              * fetch 인자로 data를 전달받아 tin과 함께 호출
              */
-            api: (data) => APIS.getRpckItmApp(id),
-            enabled: !!id,
+            api: (data) => APIS.getRpckItmApp(dclrNo),
+            enabled: !!dclrNo,
             onSuccess: (data) => {
                 console.log(data);
                 console.log(data.rpckItmAppInfo.content);
-                form.rpckItmApp.setValues({ ...data.rpckItmAppInfo.content, rprtNo: id });
+                form.rpckItmApp.setValues({ ...data.rpckItmAppInfo.content, rprtNo: dclrNo });
                 console.log(form.rpckItmApp.getValues());
             },
             onError: () => {},
@@ -169,7 +169,7 @@ export const CGME0411002S = () => {
     return (
         <Page>
             <Page.Navigation
-                base={envs.base}
+                base={comnEnvs.base}
                 nodes={[...BASE.nodes, { path: "/wrhs/rpck/cgme0411002s", label: "T_RPCK_ITM_DCLR_RGSR" }]}
             />
             <Page.Header
@@ -256,11 +256,11 @@ export const CGME0411002S = () => {
                 <Group bgColor={false}>
                     <Layout direction="row">
                         <Layout.Left>
-                            <Button onClick={handler.navigateToList}>{t("B_LST")}</Button>
+                            <Button as="list" onClick={handler.navigateToList}></Button>
                         </Layout.Left>
                         <Layout.Right>
-                            <Button onClick={handler.saveRpckItmApp}>{t("B_SAVE")}</Button>
-                            <Button onClick={handler.submitRpckItmApp}>{t("B_SBMT")}</Button>
+                            <Button as="save" onClick={handler.saveRpckItmApp}></Button>
+                            <Button as="submit" onClick={handler.submitRpckItmApp}></Button>
                         </Layout.Right>
                     </Layout>
                 </Group>

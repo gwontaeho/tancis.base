@@ -1,10 +1,11 @@
 import { useEffect } from "react";
-
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Wijmo } from "@/comn/components";
-import { utils, envs } from "@/comn/utils";
+import { comnUtils, comnEnvs } from "@/comn/utils";
+//import {} from "@/tra/tancis/cgme/comn";
 import { Page, Group, Layout, Button } from "@/comn/components";
+<<<<<<< HEAD
 import {
     useForm,
     useFetch,
@@ -16,12 +17,16 @@ import {
     TFormValues,
     useToast,
 } from "@/comn/hooks";
+=======
+import { useForm, useFetch, useWijmo, useModal, useStore, useToast } from "@/comn/hooks";
+>>>>>>> 3f363bf46a07439b366c5d1be677c353bd61decb
 import { BASE, URLS, APIS, SG_RPCK_ITM_APP_LIST, SF_RPCK_ITM_APP_SRCH } from "./services/RpckItmAppService";
 
 export const CGME0411001Q = (props: any) => {
     const pgeUid = "CGME0411001Q";
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const modal = useModal();
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();
 
@@ -51,7 +56,7 @@ export const CGME0411001Q = (props: any) => {
             api: (page = grid.rpckItmAppLst.page) => {
                 return APIS.getRpckItmAppList(form.rpckItmAppSrch.getValues(), page, grid.rpckItmAppLst.size);
             },
-            enabled: utils.isEmpty(form.rpckItmAppSrch.errors) && form.rpckItmAppSrch.isSubmitted,
+            enabled: comnUtils.isEmpty(form.rpckItmAppSrch.errors) && form.rpckItmAppSrch.isSubmitted,
             key: [grid.rpckItmAppLst.page, grid.rpckItmAppLst.size],
             onSuccess: () => {
                 setStore(pgeUid, {
@@ -59,6 +64,18 @@ export const CGME0411001Q = (props: any) => {
                     page: grid.rpckItmAppLst.page,
                     size: grid.rpckItmAppLst.size,
                 });
+            },
+            showToast: true,
+        }),
+        deleteRpckItmApp: useFetch({
+            api: (dclrNos) => APIS.deleteRpckItmApp(dclrNos),
+            onSuccess: () => {
+                toast.showToast({ type: "success", content: "msg.00003" });
+                modal.openModal({ content: "msg.00003" });
+                handler.getRpckItmAppLst();
+            },
+            onError: () => {
+                modal.openModal({ content: "msg.00003" });
             },
         }),
     };
@@ -75,19 +92,36 @@ export const CGME0411001Q = (props: any) => {
                 }
             )();
         },
+        deleteRpckItmApp: () => {
+            const seltLst: any[] = grid.rpckItmAppLst.getChecked() || [];
+            if (comnUtils.isEmpty(seltLst)) {
+                modal.openModal({ content: "msg.00004" });
+                return;
+            }
+
+            const dclrNos: string[] = [];
+            seltLst.forEach((item) => {
+                dclrNos.push(`${item.dcltTin}-${item.dclrYy}-${item.prcsTpCd}-${item.dclrSrno}`);
+            });
+
+            fetch.deleteRpckItmApp.fetch(dclrNos.join(","));
+        },
         click_Grid_RpckItmAppLst: {
-            dcltTin: (data: any) => {
-                navigate(
-                    `${URLS.cgme0411002s}/${data.rowValues.dcltTin}-${data.rowValues.dclrYy}-${data.rowValues.prcsTpCd}-${data.rowValues.dclrSrno}`
-                );
+            dclrNo: (data: any) => {
+                const dclrNo = `${data.rowValues.dcltTin}-${data.rowValues.dclrYy}-${data.rowValues.prcsTpCd}-${data.rowValues.dclrSrno}`;
+                navigate(`${URLS.cgme0411002s}/${dclrNo}`);
             },
         },
     };
 
+    useEffect(() => {
+        fetch.getRpckItmAppLst.fetch();
+    }, []);
+
     return (
         <Page>
             <Page.Navigation
-                base={envs.base}
+                base={comnEnvs.base}
                 nodes={[...BASE.nodes, { path: "/wrhs/rpck/cgme0411001q", label: "T_RPCK_ITM_DCLR_LST" }]}
             />
             <Page.Header title={t("T_RPCK_ITM_DCLR_LST")} description={t("T_RPCK_ITM_DCLR_LST")} id={pgeUid} />
@@ -110,27 +144,35 @@ export const CGME0411001Q = (props: any) => {
                     <Layout direction="row">
                         <Layout.Left>
                             <Button
+                                as={"reset"}
                                 onClick={() => {
                                     form.rpckItmAppSrch.reset();
                                 }}
-                            >
-                                {t("B_RESET")}
-                            </Button>
+                            ></Button>
                         </Layout.Left>
                         <Layout.Right>
                             <Button
+                                as="search"
                                 onClick={() => {
                                     handler.getRpckItmAppLst();
                                 }}
-                            >
-                                {t("B_SRCH")}
-                            </Button>
+                            ></Button>
                         </Layout.Right>
                     </Layout>
                 </Group>
             </form>
 
             <Group>
+                <Layout direction="row">
+                    <Layout.Right>
+                        <Button
+                            as="delete"
+                            onClick={() => {
+                                handler.deleteRpckItmApp();
+                            }}
+                        ></Button>
+                    </Layout.Right>
+                </Layout>
                 <Wijmo
                     {...grid.rpckItmAppLst.grid}
                     data={fetch.getRpckItmAppLst.data?.rpckItmAppList}
