@@ -13,7 +13,7 @@ import {
     usePopup,
     useTheme,
     useStore,
-    FormValuesType,
+    TFormValues,
     useToast,
 } from "@/comn/hooks";
 import { BASE, URLS, APIS, SG_RPCK_ITM_APP_LIST, SF_RPCK_ITM_APP_SRCH } from "./services/RpckItmAppService";
