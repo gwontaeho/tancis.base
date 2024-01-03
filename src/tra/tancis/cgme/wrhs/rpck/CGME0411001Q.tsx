@@ -1,11 +1,10 @@
 import { useEffect } from "react";
-
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Wijmo } from "@/comn/components";
 import { utils, envs } from "@/comn/utils";
 import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, useWijmo, useModal, useStore, FormValuesType, useToast } from "@/comn/hooks";
+import { useForm, useFetch, useWijmo, useModal, useStore, useToast } from "@/comn/hooks";
 import { BASE, URLS, APIS, SG_RPCK_ITM_APP_LIST, SF_RPCK_ITM_APP_SRCH } from "./services/RpckItmAppService";
 
 export const CGME0411001Q = (props: any) => {
@@ -15,8 +14,6 @@ export const CGME0411001Q = (props: any) => {
     const modal = useModal();
     const { pgeStore, setStore } = useStore({ pgeUid: pgeUid });
     const toast = useToast();
-
-    console.log(pgeStore);
 
     const form = {
         rpckItmAppSrch: useForm({
@@ -53,6 +50,7 @@ export const CGME0411001Q = (props: any) => {
                     size: grid.rpckItmAppLst.size,
                 });
             },
+            showToast: true,
         }),
         deleteRpckItmApp: useFetch({
             api: (dclrNos) => APIS.deleteRpckItmApp(dclrNos),
@@ -100,6 +98,10 @@ export const CGME0411001Q = (props: any) => {
             },
         },
     };
+
+    useEffect(() => {
+        fetch.getRpckItmAppLst.fetch();
+    }, []);
 
     return (
         <Page>
