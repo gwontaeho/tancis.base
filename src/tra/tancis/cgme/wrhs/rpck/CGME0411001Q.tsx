@@ -2,11 +2,11 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Wijmo } from "@/comn/components";
-import { comnUtils, comnEnvs } from "@/comn/utils";
-import { utils } from "@/tra/tancis/cgme/comn";
-import { Page, Group, Layout, Button } from "@/comn/components";
-import { useForm, useFetch, useWijmo, useModal, useStore, useToast } from "@/comn/hooks";
-import { BASE, URLS, APIS, SG_RPCK_ITM_APP_LIST, SF_RPCK_ITM_APP_SRCH } from "./services/RpckItmAppService";
+import { comnUtils, comnEnvs } from "@/comn/utils"; // 프로젝트 공통 유틸
+import { utils } from "@/tra/tancis/cgme/comn"; // 시스템 공통 유틸
+import { Page, Group, Layout, Button } from "@/comn/components"; // 화면 구성 컴포넌트
+import { useForm, useFetch, useWijmo, useModal, useStore, useToast } from "@/comn/hooks"; // hook
+import { BASE, URLS, APIS, SG_RPCK_ITM_APP_LIST, SF_RPCK_ITM_APP_SRCH } from "./services/RpckItmAppService"; // 서비스
 
 /*
  * @ 화면 컴포넌트 주석
