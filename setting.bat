@@ -2,9 +2,11 @@
 rm -rf .git
 RD /S /Q .git
 
+
 @REM remove ./src/comn
 rm -rf ./src/comn
 RD /S /Q "./src/comn"
+
 
 @REM init git
 git init
@@ -19,8 +21,10 @@ xcopy ".\src\comn\.root" ".\" /E /Y
 xcopy ".\src\comn\.src" ".\src" /E /Y
 
 
+git add .
+git commit -m ";"
+git branch -M main
+
+
 @REM package install
 npm install
-
-
-pause
