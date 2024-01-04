@@ -4,14 +4,13 @@ import { useTranslation } from "react-i18next";
 import { Wijmo } from "@/comn/components";
 import { Page, Group, Layout, Button } from "@/comn/components";
 import { comnEnvs } from "@/comn/utils";
-import { useForm, useFetch, useWijmo, useCondition, usePopup, useTheme } from "@/comn/hooks";
+import { useForm, useFetch, useWijmo, usePopup, useTheme } from "@/comn/hooks";
 import { BASE, URLS, APIS, SF_RPCK_ITM_APP_SRCH } from "./services/RpckItmAppService";
 
 export const CGME0411003Q = (props: any) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { condition } = useCondition();
-    const form = useForm({ defaultSchema: SF_RPCK_ITM_APP_SRCH, values: condition });
+    const form = useForm({ defaultSchema: SF_RPCK_ITM_APP_SRCH });
 
     const onSubmit = () => {};
 
