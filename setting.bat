@@ -2,6 +2,9 @@
 rm -rf .git
 RD /S /Q .git
 
+@REM remove ./src/comn
+rm -rf ./src/comn
+RD /S /Q ./src/comn
 
 @REM init git
 git init
