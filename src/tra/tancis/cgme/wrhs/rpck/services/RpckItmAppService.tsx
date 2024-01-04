@@ -1,11 +1,11 @@
 import { api } from "@/comn";
-import { comnEnvs } from "@/comn/utils";
+import { comnEnvs, comnUtils } from "@/comn/utils";
 import { TFormSchema } from "@/comn/hooks";
 import { WijmoSchemaType } from "@/comn/hooks";
 
 export const BASE = {
     path: `${comnEnvs.base}/wrhs/rpck`,
-    api: `http://192.168.194.202:8080/api/v1/wrhs/rpck/rpck-itm-app`,
+    api: `${process.env.REACT_APP_API_CGM}/api/v1/wrhs/rpck/rpck-itm-app`,
     nodes: [
         { path: "/", label: "L_CAG_MGMT" },
         { path: "/wrhs/", label: "L_MNFS_MGMT" },
@@ -22,7 +22,7 @@ export const URLS = {
 export const APIS = {
     getRpckItmAppList: (data: any, page: number, size: number) => {
         return api.get(`${BASE.api}?page=${page}&size=${size}`, {
-            params: data,
+            params: comnUtils.toGetParams(data),
         });
     },
     getRpckItmApp: (id: any) => {
