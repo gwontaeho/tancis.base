@@ -150,16 +150,15 @@ export const CGME0411001Q = (props: any) => {
             onError: () => {},
             showToast: true,
         }),
+        // Delete Repacking Item Application !== 재포장 품목 신청서 삭제 ==!
         deleteRpckItmApp: useFetch({
             api: (dclrNos) => APIS.deleteRpckItmApp(dclrNos),
             onSuccess: () => {
-                toast.showToast({ type: "success", content: "msg.00003" });
                 modal.openModal({ content: "msg.00003" });
                 handler.getRpckItmAppList();
             },
-            onError: () => {
-                toast.showToast({ type: "warning", content: "msg.00002" });
-            },
+            onError: () => {},
+            showToast: true,
         }),
     };
 
@@ -204,17 +203,17 @@ export const CGME0411001Q = (props: any) => {
                 return;
             }
 
-            if (comnUtils.isEmpty(seltList)) {
-                modal.openModal({ content: "msg.00004" });
-                return;
-            }
+            modal.openModal({
+                content: "msg.00103",
+                onConfirm: () => {
+                    const dclrNos: string[] = [];
+                    seltList.forEach((item) => {
+                        dclrNos.push(`${item.dcltTin}-${item.dclrYy}-${item.prcsTpCd}-${item.dclrSrno}`);
+                    });
 
-            const dclrNos: string[] = [];
-            seltList.forEach((item) => {
-                dclrNos.push(`${item.dcltTin}-${item.dclrYy}-${item.prcsTpCd}-${item.dclrSrno}`);
+                    fetch.deleteRpckItmApp.fetch(dclrNos.join(","));
+                },
             });
-
-            fetch.deleteRpckItmApp.fetch(dclrNos.join(","));
         },
         // Click Grid of Repacking Item Application List !== 재포장 품목 신청서 목록 그리드 클릭 ==!
         click_Grid_RpckItmAppList: {
@@ -233,6 +232,18 @@ export const CGME0411001Q = (props: any) => {
         fetch.getRpckItmAppList.fetch();
     }, []);
 
+    /*
+     * @ 라벨 생성(명명 규칙)
+     * @ prefix
+     * @ 일반라벨 : L_
+     * @ 버튼 : B_
+     * @ 제목 : T_
+     * @ 메세지 : msg.00000 [msg.숫자5자리] , 00000 ~ 10000 까지는 공통영역
+     * @ 매세지를 제외한 라벨은 메타 단어, 용어 조합, 메세지는 숫자 5자리 일련번호로 정의
+     * @ 대문자로 표시
+     * @ 단어와 단어 사이 용어와 용어 사이는 "_" 로 구분
+     */
+
     return (
         <Page>
             <Page.Navigation
@@ -244,22 +255,22 @@ export const CGME0411001Q = (props: any) => {
                 <Group>
                     <Group.Body>
                         <Group.Row>
-                            <Group.Control
-                                {...form.rpckItmAppSrch.schema.frstRgsrDtmRnge}
-                                controlSize={10}
-                            ></Group.Control>
+                            {/* Registration Date !== 등록일자 ==!  */}
+                            <Group.Control {...form.rpckItmAppSrch.schema.frstRgsrDtmRnge}></Group.Control>
                         </Group.Row>
                         <Group.Row>
+                            {/* MRN !== MRN ==!  */}
                             <Group.Control {...form.rpckItmAppSrch.schema.mrn}></Group.Control>
                         </Group.Row>
                         <Group.Row>
+                            {/* Processing Status !== 처리상태 ==!  */}
                             <Group.Control {...form.rpckItmAppSrch.schema.prcssStatCd}></Group.Control>
                         </Group.Row>
                     </Group.Body>
                     <Layout direction="row">
                         <Layout.Left>
                             <Button
-                                as={"reset"}
+                                as="reset"
                                 onClick={() => {
                                     form.rpckItmAppSrch.reset();
                                 }}
@@ -288,6 +299,12 @@ export const CGME0411001Q = (props: any) => {
                         ></Button>
                     </Layout.Right>
                 </Layout>
+                {/*
+                 * 그리드
+                 * @ 그리드 스키마 주입 : {...grid.[그리드이름].grid}
+                 * @ 데이터 data={fetch.[fetch 명].data?.[api 리턴 vo 명]}
+                 * @ 셀클릭이벤트 연결 : onCellClick={handler.[그리드 이벤트 핸들러명]}
+                 */}
                 <Wijmo
                     {...grid.rpckItmAppList.grid}
                     data={fetch.getRpckItmAppList.data?.rpckItmAppList}

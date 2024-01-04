@@ -3,6 +3,19 @@ import { comnEnvs, comnUtils } from "@/comn/utils";
 import { TFormSchema } from "@/comn/hooks";
 import { WijmoSchemaType } from "@/comn/hooks";
 
+/*
+ * Repacking Item Declaration Service
+ * !== 재포장 BL(품목) 신고서 기능 서비스 ==!
+ */
+
+/*
+ * @ BASE
+ * @ 서비스에서 사용하는 기본 정보 세팅
+ * @ path : 화면들의 기본 웹 경로
+ * @ api : 사용하는 api 의 기본 주소
+ * @ api 주소가 여러개일 경우 _ 로구분하여 의미에 맞게 카멜표기업으로 표시 : api_clr
+ * @ nodes : 화면의 Page.Navigation 에서 사용하는 기본 결로 Array
+ */
 export const BASE = {
     path: `${comnEnvs.base}/wrhs/rpck`,
     api: `${process.env.REACT_APP_API_CGM}/api/v1/wrhs/rpck/rpck-itm-app`,
@@ -13,13 +26,23 @@ export const BASE = {
     ],
 };
 
+/*
+ * @ URLS
+ * @ 화면에서 사용하는 주소들 정의
+ * @ 해당화면의 컴포넌트명 대문자로 정의
+ */
 export const URLS = {
-    cgme0411001q: `${BASE.path}/cgme0411001q`,
-    cgme0411002s: `${BASE.path}/cgme0411002s`,
-    cgme0411003q: `${BASE.path}/cgme0411003q`,
+    cgme0411001q: `${BASE.path}/cgme0411001q`, // Repacking Item Declaration List !== 재포장 BL(품목) 신고서 목록 ==!
+    cgme0411002s: `${BASE.path}/cgme0411002s`, // Repacking Item Declaration Registration !== 재포장 BL(품목) 신고서 등록 ==!
+    cgme0411003q: `${BASE.path}/cgme0411003q`, // Repacking Item Declaration Item List !== 재포장 BL(품목) 신고서 품목 목록 ==!
 };
 
+/*
+ * @ APIS
+ * @ 화면에서 사용하는 api 정의
+ */
 export const APIS = {
+    // Get Repacking Item Application List !== 재포장 품목 신청서 목록 조회 ==!
     getRpckItmAppList: (data: any, page: number, size: number) => {
         return api.get(`${BASE.api}?page=${page}&size=${size}`, {
             params: comnUtils.toGetParams(data),
@@ -38,11 +61,20 @@ export const APIS = {
             ...data,
         });
     },
+    // Delete Repacking Item Application !== 재포장 품목 신청서 삭제 ==!
     deleteRpckItmApp: (dclrNos: any) => {
         return api.delete(`${BASE.api}/${dclrNos}`);
     },
 };
 
+/*
+ * @ 그리드 스키마 정의
+ * @ 화면에서 사용하는 그리드 구조 정의
+ * @ SG_ 로 시작 (Schema grid)
+ * @ SQ_[그리드명 메타 대문자, "_" 로 구분 ]
+ */
+
+// Schema of Repacking Item Application List Grid !== 재포장 품목 신청서 목록 그리드 스키마 ==!
 export const SG_RPCK_ITM_APP_LIST: WijmoSchemaType = {
     id: "grid",
     options: { pagination: "out", isReadOnly: true, checkbox: true },
@@ -96,21 +128,30 @@ export const SG_RPCK_ITM_APP_LIST: WijmoSchemaType = {
     ],
 };
 
+/*
+ * @ Form 스키마 정의
+ * @ 화면에서 사용하는 Form 구조 정의
+ * @ SF_ 로 시작 (Schema form)
+ * @ SF_[Form 이름 메타 대문자, "_" 로 구분 ]
+ * @ 검색폼은 _SRCH 로 구분
+ */
+
+// Schema of Repacking Item Application List Search Form !== 재포장 품목 신청서 목록 검색 폼 스키마 ==!
 export const SF_RPCK_ITM_APP_SRCH: TFormSchema = {
-    id: "form_srch_RpckItm",
+    id: "form_RpckItmAppSrch",
     schema: {
         frstRgsrDtmRnge: {
             type: "daterange",
             label: "L_RGSR_DT",
-            start: { name: "frstRgsrDtmStrt" },
-            end: { name: "frstRgsrDtmEnd" },
+            start: { name: "strtDt" },
+            end: { name: "endDt" },
             rangeButton: 0,
-            required: true,
+            controlSize: 10,
         },
         mrn: { type: "text", label: "L_MRN" },
         prcssStatCd: {
             type: "checkbox",
-            label: "L_PRCSS_STAT_CD",
+            label: "L_PRCSS_STAT",
             area: "comnCd",
             controlSize: 10,
             comnCd: "COM_0100",
