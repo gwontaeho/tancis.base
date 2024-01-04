@@ -24,7 +24,3 @@ xcopy ".\src\comn\.src" ".\src" /E /Y
 git add .
 git commit -m ";"
 git branch -M main
-
-
-@REM package install
-npm install
