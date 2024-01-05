@@ -28,30 +28,32 @@ export const CGME0411003Q = (props: any) => {
             <form onSubmit={form.handleSubmit(onSubmit)}>
                 <Group>
                     <Group.Body>
-                        <Group.Row>
-                            <Group.Control {...form.schema.frstRgsrDtmRnge} controlSize={10}></Group.Control>
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Control {...form.schema.mrn}></Group.Control>
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Control {...form.schema.prcssStatCd}></Group.Control>
-                        </Group.Row>
+                        <Group.Section>
+                            <Group.Row>
+                                <Group.Control {...form.schema.frstRgsrDtmRnge} controlSize={10}></Group.Control>
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...form.schema.mrn}></Group.Control>
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...form.schema.prcssStatCd}></Group.Control>
+                            </Group.Row>
+                        </Group.Section>
+                        <Layout direction="row">
+                            <Layout.Left>
+                                <Button
+                                    onClick={() => {
+                                        form.reset();
+                                    }}
+                                >
+                                    {t("B_RESET")}
+                                </Button>
+                            </Layout.Left>
+                            <Layout.Right>
+                                <Button type="submit">{t("B_SRCH")}</Button>
+                            </Layout.Right>
+                        </Layout>
                     </Group.Body>
-                    <Layout direction="row">
-                        <Layout.Left>
-                            <Button
-                                onClick={() => {
-                                    form.reset();
-                                }}
-                            >
-                                {t("B_RESET")}
-                            </Button>
-                        </Layout.Left>
-                        <Layout.Right>
-                            <Button type="submit">{t("B_SRCH")}</Button>
-                        </Layout.Right>
-                    </Layout>
                 </Group>
             </form>
             <Group bgColor={false}>

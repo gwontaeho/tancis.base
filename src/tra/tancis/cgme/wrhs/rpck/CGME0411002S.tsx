@@ -180,89 +180,89 @@ export const CGME0411002S = () => {
             <form>
                 <Group>
                     <Group.Body>
-                        <Group.Row>
-                            <Group.Control {...form.rpckItmApp.schema.rprtNo} />
-                            <Group.Control {...form.rpckItmApp.schema.prcssStatCd} />
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Control {...form.rpckItmApp.schema.mblNo} />
-                            <Group.Control {...form.rpckItmApp.schema.crn} />
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Control {...form.rpckItmApp.schema.cagClsfCd} />
-                            <Group.Control {...form.rpckItmApp.schema.dstnPlcCd} />
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Control {...form.rpckItmApp.schema.godsDesc} />
-                            <Group.Control {...form.rpckItmApp.schema.loadPortCd} />
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Label label={"L_PCKG_NO"} required={true} />
-                            <Group.Col>
-                                <Group.Control {...form.rpckItmApp.schema.blPckgNo} controlSize={2} />
-                                <Group.Control {...form.rpckItmApp.schema.pckgUtCd} controlSize={2} />
-                            </Group.Col>
-                            <Group.Control {...form.rpckItmApp.schema.blGwght} />
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Control {...form.rpckItmApp.schema.pckgTpCd} />
-                            <Group.Control {...form.rpckItmApp.schema.blNwght} />
-                        </Group.Row>
-                    </Group.Body>
-                    <Group.Title title={"L_CO"} titleSize={2}></Group.Title>
-                    <Group.Body>
-                        <Group.Row>
-                            <Group.Control {...form.rpckItmApp.schema.exppnTin} />
-                            <Group.Control {...form.rpckItmApp.schema.exppnNm} />
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Control {...form.rpckItmApp.schema.exppnTelno} />
-                            <Group.Control {...form.rpckItmApp.schema.exppnAddr} />
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Control {...form.rpckItmApp.schema.cnsiTin} />
-                            <Group.Control {...form.rpckItmApp.schema.cnsiNm} />
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Control {...form.rpckItmApp.schema.cnsiTelno} />
-                            <Group.Control {...form.rpckItmApp.schema.cnsiAddr} />
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Control
-                                type="boolean"
-                                inputLabel="L_SAME_AS_ABOVE"
-                                value={sameAsAbove}
-                                onChange={(value) => setSameAsAbove(value)}
-                            />
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Control {...form.rpckItmApp.schema.ntprTin} />
-                            <Group.Control {...form.rpckItmApp.schema.ntprNm} />
-                        </Group.Row>
-                        <Group.Row>
-                            <Group.Control {...form.rpckItmApp.schema.ntprTelno} />
-                            <Group.Control {...form.rpckItmApp.schema.ntprAddr} />
-                        </Group.Row>
-                    </Group.Body>
-                    <Group.Title title={"L_WRHS"} titleSize={2}></Group.Title>
-                    <Group.Body>
-                        <Group.Row>
-                            <Group.Control {...form.rpckItmApp.schema.wrhsCd} controlSize={10} />
-                        </Group.Row>
-                    </Group.Body>
-                    <Group.Title title={"L_RPCK_ITM_LST"} titleSize={2}></Group.Title>
-                </Group>
+                        <Group.Section>
+                            <Group.Row>
+                                <Group.Control {...form.rpckItmApp.schema.rprtNo} />
+                                <Group.Control {...form.rpckItmApp.schema.prcssStatCd} />
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...form.rpckItmApp.schema.mblNo} />
+                                <Group.Control {...form.rpckItmApp.schema.crn} />
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...form.rpckItmApp.schema.cagClsfCd} />
+                                <Group.Control {...form.rpckItmApp.schema.dstnPlcCd} />
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...form.rpckItmApp.schema.godsDesc} />
+                                <Group.Control {...form.rpckItmApp.schema.loadPortCd} />
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Label label={"L_PCKG_NO"} required={true} />
+                                <Group.Col>
+                                    <Group.Control {...form.rpckItmApp.schema.blPckgNo} controlSize={2} />
+                                    <Group.Control {...form.rpckItmApp.schema.pckgUtCd} controlSize={2} />
+                                </Group.Col>
+                                <Group.Control {...form.rpckItmApp.schema.blGwght} />
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...form.rpckItmApp.schema.pckgTpCd} />
+                                <Group.Control {...form.rpckItmApp.schema.blNwght} />
+                            </Group.Row>
+                        </Group.Section>
+                        <Group.Title title={"L_CO"} titleSize={2}></Group.Title>
+                        <Group.Section>
+                            <Group.Row>
+                                <Group.Control {...form.rpckItmApp.schema.exppnTin} />
+                                <Group.Control {...form.rpckItmApp.schema.exppnNm} />
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...form.rpckItmApp.schema.exppnTelno} />
+                                <Group.Control {...form.rpckItmApp.schema.exppnAddr} />
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...form.rpckItmApp.schema.cnsiTin} />
+                                <Group.Control {...form.rpckItmApp.schema.cnsiNm} />
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...form.rpckItmApp.schema.cnsiTelno} />
+                                <Group.Control {...form.rpckItmApp.schema.cnsiAddr} />
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control
+                                    type="boolean"
+                                    inputLabel="L_SAME_AS_ABOVE"
+                                    value={sameAsAbove}
+                                    onChange={(value) => setSameAsAbove(value)}
+                                />
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...form.rpckItmApp.schema.ntprTin} />
+                                <Group.Control {...form.rpckItmApp.schema.ntprNm} />
+                            </Group.Row>
+                            <Group.Row>
+                                <Group.Control {...form.rpckItmApp.schema.ntprTelno} />
+                                <Group.Control {...form.rpckItmApp.schema.ntprAddr} />
+                            </Group.Row>
+                        </Group.Section>
+                        <Group.Title title={"L_WRHS"} titleSize={2}></Group.Title>
+                        <Group.Section>
+                            <Group.Row>
+                                <Group.Control {...form.rpckItmApp.schema.wrhsCd} controlSize={10} />
+                            </Group.Row>
+                        </Group.Section>
+                        <Group.Title title={"L_RPCK_ITM_LST"} titleSize={2}></Group.Title>
 
-                <Group bgColor={false}>
-                    <Layout direction="row">
-                        <Layout.Left>
-                            <Button as="list" onClick={handler.navigateToList}></Button>
-                        </Layout.Left>
-                        <Layout.Right>
-                            <Button as="save" onClick={handler.saveRpckItmApp}></Button>
-                            <Button as="submit" onClick={handler.submitRpckItmApp}></Button>
-                        </Layout.Right>
-                    </Layout>
+                        <Layout direction="row">
+                            <Layout.Left>
+                                <Button as="list" onClick={handler.navigateToList}></Button>
+                            </Layout.Left>
+                            <Layout.Right>
+                                <Button as="save" onClick={handler.saveRpckItmApp}></Button>
+                                <Button as="submit" onClick={handler.submitRpckItmApp}></Button>
+                            </Layout.Right>
+                        </Layout>
+                    </Group.Body>
                 </Group>
             </form>
         </Page>
