@@ -254,77 +254,78 @@ export const CGME0411001Q = (props: any) => {
             <form>
                 <Group>
                     <Group.Body>
-                        <Group.Row>
-                            {/* Registration Date !== 등록일자 ==!  */}
-                            <Group.Control {...form.rpckItmAppSrch.schema.frstRgsrDtmRnge}></Group.Control>
-                        </Group.Row>
-                        <Group.Row>
-                            {/* MRN !== MRN ==!  */}
-                            <Group.Control {...form.rpckItmAppSrch.schema.mrn}></Group.Control>
-                        </Group.Row>
-                        <Group.Row>
-                            {/* Processing Status !== 처리상태 ==!  */}
-                            <Group.Control {...form.rpckItmAppSrch.schema.prcssStatCd}></Group.Control>
-                        </Group.Row>
+                        <Group.Section>
+                            <Group.Row>
+                                {/* Registration Date !== 등록일자 ==!  */}
+                                <Group.Control {...form.rpckItmAppSrch.schema.frstRgsrDtmRnge}></Group.Control>
+                            </Group.Row>
+                            <Group.Row>
+                                {/* MRN !== MRN ==!  */}
+                                <Group.Control {...form.rpckItmAppSrch.schema.mrn}></Group.Control>
+                            </Group.Row>
+                            <Group.Row>
+                                {/* Processing Status !== 처리상태 ==!  */}
+                                <Group.Control {...form.rpckItmAppSrch.schema.prcssStatCd}></Group.Control>
+                            </Group.Row>
+                        </Group.Section>
+
+                        <Layout direction="row">
+                            <Layout.Left>
+                                <Button
+                                    as="reset"
+                                    onClick={() => {
+                                        form.rpckItmAppSrch.reset();
+                                    }}
+                                ></Button>
+                            </Layout.Left>
+                            <Layout.Right>
+                                <Button
+                                    as="search"
+                                    onClick={() => {
+                                        handler.getRpckItmAppList();
+                                    }}
+                                ></Button>
+                            </Layout.Right>
+                        </Layout>
                     </Group.Body>
-                    <Layout direction="row">
-                        <Layout.Left>
-                            <Button
-                                as="reset"
-                                onClick={() => {
-                                    form.rpckItmAppSrch.reset();
-                                }}
-                            ></Button>
-                        </Layout.Left>
-                        <Layout.Right>
-                            <Button
-                                as="search"
-                                onClick={() => {
-                                    handler.getRpckItmAppList();
-                                }}
-                            ></Button>
-                        </Layout.Right>
-                    </Layout>
                 </Group>
             </form>
 
             <Group>
-                <Layout direction="row">
-                    <Layout.Right>
-                        <Button
-                            as="delete"
-                            onClick={() => {
-                                handler.deleteRpckItmApp();
-                            }}
-                        ></Button>
-                    </Layout.Right>
-                </Layout>
-                {/*
-                 * 그리드
-                 * @ 그리드 스키마 주입 : {...grid.[그리드이름].grid}
-                 * @ 데이터 data={fetch.[fetch 명].data?.[api 리턴 vo 명]}
-                 * @ 셀클릭이벤트 연결 : onCellClick={handler.[그리드 이벤트 핸들러명]}
-                 */}
-                <Wijmo
-                    {...grid.rpckItmAppList.grid}
-                    data={fetch.getRpckItmAppList.data?.rpckItmAppList}
-                    onCellClick={handler.click_Grid_RpckItmAppList}
-                />
+                <Group.Body>
+                    <Layout direction="row">
+                        <Layout.Right>
+                            <Button
+                                as="delete"
+                                onClick={() => {
+                                    handler.deleteRpckItmApp();
+                                }}
+                            ></Button>
+                        </Layout.Right>
+                    </Layout>
+                    {/*
+                     * 그리드
+                     * @ 그리드 스키마 주입 : {...grid.[그리드이름].grid}
+                     * @ 데이터 data={fetch.[fetch 명].data?.[api 리턴 vo 명]}
+                     * @ 셀클릭이벤트 연결 : onCellClick={handler.[그리드 이벤트 핸들러명]}
+                     */}
+                    <Wijmo
+                        {...grid.rpckItmAppList.grid}
+                        data={fetch.getRpckItmAppList.data?.rpckItmAppList}
+                        onCellClick={handler.click_Grid_RpckItmAppList}
+                    />
+                </Group.Body>
             </Group>
 
-            <Group bgColor={false}>
-                <Layout direction="row">
-                    <Layout.Left>
-                        <Button
-                            onClick={() => {
-                                navigate(URLS.cgme0411002s);
-                            }}
-                        >
-                            {t("B_NEW_$0", { 0: t("L_RPCK_BL") })}
-                        </Button>
-                    </Layout.Left>
-                </Layout>
-            </Group>
+            <Layout.Left>
+                <Button
+                    onClick={() => {
+                        navigate(URLS.cgme0411002s);
+                    }}
+                >
+                    {t("B_NEW_$0", { 0: t("L_RPCK_BL") })}
+                </Button>
+            </Layout.Left>
         </Page>
     );
 };
