@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLinkClickHandler, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Wijmo } from "@/comn/components";
 import { comnUtils, comnEnvs } from "@/comn/utils"; // 프로젝트 공통 유틸
@@ -229,7 +229,7 @@ export const CGME0411001Q = (props: any) => {
      * !== 화면 초기화 함수 선언  ==!
      */
     useEffect(() => {
-        fetch.getRpckItmAppList.fetch();
+        handler.getRpckItmAppList();
     }, []);
 
     /*
@@ -325,6 +325,11 @@ export const CGME0411001Q = (props: any) => {
                 >
                     {t("B_NEW_$0", { 0: t("L_RPCK_BL") })}
                 </Button>
+                <Button
+                    onClick={() => {
+                        form.rpckItmAppSrch.getFormValues();
+                    }}
+                ></Button>
             </Layout.Left>
         </Page>
     );

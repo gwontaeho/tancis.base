@@ -143,7 +143,7 @@ export const SF_RPCK_ITM_APP_SRCH: TFormSchema = {
         frstRgsrDtmRnge: {
             type: "daterange",
             label: "L_RGSR_DT",
-            start: { name: "strtDt" },
+            start: { name: "strtDt", required: true },
             end: { name: "endDt" },
             rangeButton: 0,
             controlSize: 10,
