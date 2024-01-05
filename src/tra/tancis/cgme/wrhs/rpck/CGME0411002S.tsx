@@ -209,7 +209,7 @@ export const CGME0411002S = () => {
                             <Group.Control {...form.rpckItmApp.schema.blNwght} />
                         </Group.Row>
                     </Group.Body>
-                    <Group.Header title={"L_CO"} titleSize={2}></Group.Header>
+                    <Group.Title title={"L_CO"} titleSize={2}></Group.Title>
                     <Group.Body>
                         <Group.Row>
                             <Group.Control {...form.rpckItmApp.schema.exppnTin} />
@@ -244,13 +244,13 @@ export const CGME0411002S = () => {
                             <Group.Control {...form.rpckItmApp.schema.ntprAddr} />
                         </Group.Row>
                     </Group.Body>
-                    <Group.Header title={"L_WRHS"} titleSize={2}></Group.Header>
+                    <Group.Title title={"L_WRHS"} titleSize={2}></Group.Title>
                     <Group.Body>
                         <Group.Row>
                             <Group.Control {...form.rpckItmApp.schema.wrhsCd} controlSize={10} />
                         </Group.Row>
                     </Group.Body>
-                    <Group.Header title={"L_RPCK_ITM_LST"} titleSize={2}></Group.Header>
+                    <Group.Title title={"L_RPCK_ITM_LST"} titleSize={2}></Group.Title>
                 </Group>
 
                 <Group bgColor={false}>
