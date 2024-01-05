@@ -15,16 +15,15 @@ export const CGME0411003Q = (props: any) => {
     const onSubmit = () => {};
 
     return (
-        <Page>
-            <Page.Navigation
-                base={comnEnvs.base}
-                nodes={[...BASE.nodes, { path: "/wrhs/rpck/cgme0411001q", label: "T_RPCK_ITM_DCLR_LST" }]}
-            />
-            <Page.Header
-                title={t("T_RPCK_ITM_DCLR_LST")}
-                description={t("T_RPCK_ITM_DCLR_LST")}
-                id={"UI-CGME-0411-001Q"}
-            />
+        <Page
+            id={"UI-CGME-0411-001Q"}
+            title={t("T_RPCK_ITM_DCLR_LST")}
+            description={t("T_RPCK_ITM_DCLR_LST")}
+            navigation={{
+                base: comnEnvs.base,
+                nodes: [...BASE.nodes, { path: "/wrhs/rpck/cgme0411001q", label: "T_RPCK_ITM_DCLR_LST" }],
+            }}
+        >
             <form onSubmit={form.handleSubmit(onSubmit)}>
                 <Group>
                     <Group.Body>

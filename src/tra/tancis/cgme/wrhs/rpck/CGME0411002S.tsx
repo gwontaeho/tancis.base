@@ -167,16 +167,15 @@ export const CGME0411002S = () => {
     };
 
     return (
-        <Page>
-            <Page.Navigation
-                base={comnEnvs.base}
-                nodes={[...BASE.nodes, { path: "/wrhs/rpck/cgme0411002s", label: "T_RPCK_ITM_DCLR_RGSR" }]}
-            />
-            <Page.Header
-                title={t("T_RPCK_ITM_DCLR_RGSR")}
-                description={t("T_RPCK_ITM_DCLR_RGSR")}
-                id={"UI-CGME-0411-002S"}
-            />
+        <Page
+            id={"UI-CGME-0411-002S"}
+            title={t("T_RPCK_ITM_DCLR_RGSR")}
+            description={t("T_RPCK_ITM_DCLR_RGSR")}
+            navigation={{
+                base: comnEnvs.base,
+                nodes: [...BASE.nodes, { path: "/wrhs/rpck/cgme0411002s", label: "T_RPCK_ITM_DCLR_RGSR" }],
+            }}
+        >
             <form>
                 <Group>
                     <Group.Body>
