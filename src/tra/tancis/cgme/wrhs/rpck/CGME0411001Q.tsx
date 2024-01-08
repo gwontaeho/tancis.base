@@ -245,12 +245,15 @@ export const CGME0411001Q = (props: any) => {
      */
 
     return (
-        <Page>
-            <Page.Navigation
-                base={comnEnvs.base}
-                nodes={[...BASE.nodes, { path: "/wrhs/rpck/cgme0411001q", label: "T_RPCK_ITM_DCLR_LST" }]}
-            />
-            <Page.Header title={t("T_RPCK_ITM_DCLR_LST")} description={t("T_RPCK_ITM_DCLR_LST")} id={pgeUid} />
+        <Page
+            id={pgeUid}
+            title={t("T_RPCK_ITM_DCLR_LST")}
+            description={t("T_RPCK_ITM_DCLR_LST")}
+            navigation={{
+                base: comnEnvs.base,
+                nodes: [...BASE.nodes, { path: "/wrhs/rpck/cgme0411001q", label: "T_RPCK_ITM_DCLR_LST" }],
+            }}
+        >
             <form>
                 <Group>
                     <Group.Body>
