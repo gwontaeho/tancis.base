@@ -18,7 +18,7 @@ import { WijmoSchemaType } from "@/comn/hooks";
  */
 export const BASE = {
     path: `${comnEnvs.base}/wrhs/rpck`,
-    api: `${process.env.REACT_APP_API_CGM}/api/v1/wrhs/rpck/rpck-itm-app`,
+    api: `${process.env.REACT_APP_API_CGM}/api/v1/cgm/wrhs/rpck/rpck-itm-app`,
     nodes: [
         { path: "/", label: "L_CAG_MGMT" },
         { path: "/wrhs/", label: "L_MNFS_MGMT" },
