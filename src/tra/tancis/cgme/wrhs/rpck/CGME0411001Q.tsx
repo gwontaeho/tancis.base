@@ -192,7 +192,7 @@ export const CGME0411001Q = (props: any) => {
                 },
                 () => {
                     toast.showToast({ type: "warning", content: "msg.00002" });
-                }
+                },
             )();
         },
         // Delete Repacking Item Application !== 재포장 품목 신청서 삭제 ==!
@@ -275,7 +275,7 @@ export const CGME0411001Q = (props: any) => {
                         <Layout direction="row">
                             <Layout.Left>
                                 <Button
-                                    as="reset"
+                                    role="reset"
                                     onClick={() => {
                                         form.rpckItmAppSrch.reset();
                                     }}
@@ -283,7 +283,7 @@ export const CGME0411001Q = (props: any) => {
                             </Layout.Left>
                             <Layout.Right>
                                 <Button
-                                    as="search"
+                                    role="search"
                                     onClick={() => {
                                         handler.getRpckItmAppList();
                                     }}
@@ -299,7 +299,7 @@ export const CGME0411001Q = (props: any) => {
                     <Layout direction="row">
                         <Layout.Right>
                             <Button
-                                as="delete"
+                                role="delete"
                                 onClick={() => {
                                     handler.deleteRpckItmApp();
                                 }}

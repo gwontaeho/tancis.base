@@ -148,7 +148,7 @@ export const CGME0411002S = () => {
             },
             () => {
                 toast.showToast({ type: "warning", content: "msg.00002" });
-            }
+            },
         ),
 
         /**
@@ -162,7 +162,7 @@ export const CGME0411002S = () => {
             },
             () => {
                 toast.showToast({ type: "warning", content: "msg.00002" });
-            }
+            },
         ),
     };
 
@@ -254,11 +254,11 @@ export const CGME0411002S = () => {
 
                         <Layout direction="row">
                             <Layout.Left>
-                                <Button as="list" onClick={handler.navigateToList}></Button>
+                                <Button role="list" onClick={handler.navigateToList}></Button>
                             </Layout.Left>
                             <Layout.Right>
-                                <Button as="save" onClick={handler.saveRpckItmApp}></Button>
-                                <Button as="submit" onClick={handler.submitRpckItmApp}></Button>
+                                <Button role="save" onClick={handler.saveRpckItmApp}></Button>
+                                <Button role="submit" onClick={handler.submitRpckItmApp}></Button>
                             </Layout.Right>
                         </Layout>
                     </Group.Body>
