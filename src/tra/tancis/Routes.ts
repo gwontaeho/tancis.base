@@ -6,34 +6,24 @@ export const TancisRoutes = [
          * to : 메뉴의 경로 (base + to로 주소 조합)
          * children : 하위 경로 Array
          */
-        name: "Cargo",
+        name: "Cargo Management",
         base: process.env.REACT_APP_BASE,
         children: [
             {
-                name: "Cargo Management",
-                base: "",
+                name: "Manifest Management",
+                base: "/wrhs",
                 children: [
                     {
-                        name: "Manifest Management",
-                        base: "",
+                        name: "Repacking BL",
+                        base: "/rpck",
                         children: [
                             {
-                                name: "Repacking BL",
-                                base: "/wrhs/rpck",
-                                children: [
-                                    {
-                                        name: "Repacking BL (with Item)",
-                                        to: "/cgme0411001q",
-                                    },
-                                ],
+                                name: "Repacking BL (with Item)",
+                                to: "/cgme0411001q",
                             },
                         ],
                     },
                 ],
-            },
-            {
-                name: "Enforce Management",
-                base: "",
             },
         ],
     },
