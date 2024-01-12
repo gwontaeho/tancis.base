@@ -193,7 +193,7 @@ export const SF_RPCK_ITM_APP: TFormSchema = {
         ntprAddr: { type: "text", label: "L_NTPR_ADDR" },
         godsDesc: { type: "text", label: "L_GODS_DESC" },
         blPckgNo: { type: "number", required: true },
-        pckgUtCd: { type: "select", required: true, select: true, area: "comnCd", comnCd: "CAG_0018" },
+        pckgUtCd: { type: "select", required: true, area: "comnCd", comnCd: "CAG_0018" },
         blGwght: { type: "number", label: "L_BL_GWGHT", rightText: "KG", size: 4, thousandSeparator: true },
         gwghtUtCd: { type: "text", label: "L_GWGHT_UT_CD" },
         blNwght: { type: "text", label: "L_BL_NWGHT", rightText: "KG", size: 4, thousandSeparator: true },
