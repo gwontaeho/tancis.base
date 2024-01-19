@@ -1,7 +1,4 @@
 import { Routes, Route } from "react-router-dom";
-import { CGME0411001Q } from "@/tra/tancis/cgme/wrhs/rpck/CGME0411001Q";
-import { CGME0411002S } from "@/tra/tancis/cgme/wrhs/rpck/CGME0411002S";
-import { CGME0411003Q } from "@/tra/tancis/cgme/wrhs/rpck/CGME0411003Q";
 
 /*
  * 응용기능별 Router
@@ -13,13 +10,6 @@ import { CGME0411003Q } from "@/tra/tancis/cgme/wrhs/rpck/CGME0411003Q";
  * - 화면에서 파라메터로 받아서 사용할 키값은 path 문자열에 ':변수명' 으로 기입하여 해당 컴포넌트 인지하여 사용
  */
 
-export const WrhsRouter = () => {
-    return (
-        <Routes>
-            <Route path="/rpck/cgme0411001q" element={<CGME0411001Q />} />
-            <Route path="/rpck/cgme0411002s" element={<CGME0411002S />} />
-            <Route path="/rpck/cgme0411002s/:dclrNo" element={<CGME0411002S />} />
-            <Route path="/rpck/cgme0411003q" element={<CGME0411003Q />} />
-        </Routes>
-    );
+export const EcteMainRouter = () => {
+    return <Routes></Routes>;
 };

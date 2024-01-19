@@ -1,12 +1,12 @@
 import { useEffect } from "react";
-import { useLinkClickHandler, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Wijmo } from "@/comn/components";
 import { comnUtils, comnEnvs } from "@/comn/utils"; // 프로젝트 공통 유틸
-import { utils } from "@/tra/tancis/cgme/comn"; // 시스템 공통 유틸
-import { Page, Group, Layout, Button } from "@/comn/components"; // 화면 구성 컴포넌트
+import { cgmUtils } from "@/tra/tancis/cgme/comn"; // 시스템 공통 유틸
+import { Page, Group, Layout, Button, FormControl } from "@/comn/components"; // 화면 구성 컴포넌트
 import { useForm, useFetch, useWijmo, useModal, useStore, useToast } from "@/comn/hooks"; // hook
-import { BASE, URLS, APIS, SG_RPCK_ITM_APP_LIST, SF_RPCK_ITM_APP_SRCH } from "./services/RpckItmAppService"; // 서비스
+import { BASE, URLS, APIS, SG_RPCK_ITM_APP_LIST, SF_RPCK_ITM_APP_SRCH } from "./services/CgmeRpckItmAppService"; // 서비스
 
 /*
  * @ 화면 컴포넌트 주석
@@ -43,10 +43,10 @@ export const CGME0411001Q = (props: any) => {
      */
 
     const pgeUid = "UI-CGME-0411-001Q"; // Page Unique identifier !== 화면 고유 식별자 ==!
-    const { t } = useTranslation(); // Translation Hook !== 언어 변화 Hook ==!
+    const { t } = useTranslation(); // Translation Hook !== 언어 변환 Hook ==!
     const navigate = useNavigate(); // Navigate Hook !== 화면 이동 Hook ==!
     const modal = useModal(); // Modal Window Hook !== Modal 창 Hook ==!
-    const { pgeStore, setStore } = useStore({ pgeUid: pgeUid }); // Page Store Hook !== 화면 데이터 저장 Hook ==!
+    const { pgeStore, setStore, getStore } = useStore({ pgeUid: pgeUid }); // Page Store Hook !== 화면 데이터 저장 Hook ==!
     const toast = useToast(); // Toast Message Hook !== Toast 메세지 표시 Hook ==!
 
     /*
@@ -70,7 +70,9 @@ export const CGME0411001Q = (props: any) => {
         // Repacking Item Application Search !== 재포장 품목 신청서 검색 ==!
         rpckItmAppSrch: useForm({
             defaultSchema: SF_RPCK_ITM_APP_SRCH,
-            defaultValues: { ...pgeStore?.form } || {},
+            defaultValues: {
+                strtDt: comnUtils.getDate(),
+            },
         }),
     };
 
@@ -186,11 +188,11 @@ export const CGME0411001Q = (props: any) => {
         // Get Repacking Item Application List !== 재포장 품목 신청서 목록 조회 ==!
         getRpckItmAppList: () => {
             form.rpckItmAppSrch.handleSubmit(
-                () => {
+                (data) => {
                     grid.rpckItmAppList.setPage(0);
                     fetch.getRpckItmAppList.fetch(0);
                 },
-                () => {
+                (data) => {
                     toast.showToast({ type: "warning", content: "msg.00002" });
                 },
             )();
@@ -218,9 +220,15 @@ export const CGME0411001Q = (props: any) => {
         // Click Grid of Repacking Item Application List !== 재포장 품목 신청서 목록 그리드 클릭 ==!
         click_Grid_RpckItmAppList: {
             dclrNo: (data: any) => {
+                //console.log(getStore(pgeUid));
+                //console.log(fetch.getRpckItmAppList.data);
                 const dclrNo = `${data.rowValues.dcltTin}-${data.rowValues.dclrYy}-${data.rowValues.prcsTpCd}-${data.rowValues.dclrSrno}`;
                 navigate(`${URLS.cgme0411002s}/${dclrNo}`);
             },
+        },
+        click_GridRow_RpckItmAppList: (data: any) => {
+            const { binding, value, rowValues } = data;
+            console.log(binding, value, rowValues);
         },
     };
 
@@ -229,7 +237,11 @@ export const CGME0411001Q = (props: any) => {
      * !== 화면 초기화 함수 선언  ==!
      */
     useEffect(() => {
+        //form.rpckItmAppSrch.setCheckAll("prcssStatCd", true);
         handler.getRpckItmAppList();
+        //console.log(comnUtils.replaceEmpty("null"));
+        //prcssStatCd: ["A01", "A02", "A03", "A04", "A05", "A06", "A07", "A08"],
+        //form.rpckItmAppSrch.setCheckAll("prcssStatCd" , true )
     }, []);
 
     /*
@@ -251,12 +263,27 @@ export const CGME0411001Q = (props: any) => {
             description={t("T_RPCK_ITM_DCLR_LST")}
             navigation={{
                 base: comnEnvs.base,
-                nodes: [...BASE.nodes, { path: "/wrhs/rpck/cgme0411001q", label: "T_RPCK_ITM_DCLR_LST" }],
+                nodes: [...BASE.nodes, { path: "/mnfs/wrhs/rpck/cgme0411001q", label: "T_RPCK_ITM_DCLR_LST" }],
             }}
         >
             <form>
                 <Group>
                     <Group.Body>
+                        <Layout direction="row">
+                            <Layout.Left size={6}>
+                                <Group.Title title={"L_CO"} titleSize={2}></Group.Title>
+                                <FormControl {...form.rpckItmAppSrch.schema.text}></FormControl>
+                            </Layout.Left>
+                            <Layout.Right>
+                                <FormControl {...form.rpckItmAppSrch.schema.check}></FormControl>
+                                <Button
+                                    role="delete"
+                                    onClick={() => {
+                                        handler.deleteRpckItmApp();
+                                    }}
+                                ></Button>
+                            </Layout.Right>
+                        </Layout>
                         <Group.Section>
                             <Group.Row>
                                 {/* Registration Date !== 등록일자 ==!  */}
@@ -316,23 +343,44 @@ export const CGME0411001Q = (props: any) => {
                         {...grid.rpckItmAppList.grid}
                         data={fetch.getRpckItmAppList.data?.rpckItmAppList}
                         onCellClick={handler.click_Grid_RpckItmAppList}
+                        onRowClick={handler.click_GridRow_RpckItmAppList}
                     />
                 </Group.Body>
             </Group>
 
             <Layout.Left>
-                <Button
+                <Layout.Button
                     onClick={() => {
                         navigate(URLS.cgme0411002s);
                     }}
                 >
                     {t("B_NEW_$0", { 0: t("L_RPCK_BL") })}
-                </Button>
-                <Button
+                </Layout.Button>
+                <Layout.Button
                     onClick={() => {
-                        form.rpckItmAppSrch.getFormValues();
+                        //form.rpckItmAppSrch.setEditable(false);
+                        //console.log(form.rpckItmAppSrch.getValues());
+                        form.rpckItmAppSrch.setSchema("prcssStatCd", { options: [{ label: "1", value: "1" }] });
                     }}
-                ></Button>
+                ></Layout.Button>
+                <Layout.Button
+                    onClick={() => {
+                        //const row = grid.rpckItmAppList.getData();
+                        //row[0].wrhsCd = "111111";
+                        //grid.rpckItmAppList.updateRow(row[0]);
+                        //form.rpckItmAppSrch.setValue("prcssStatCd", undefined);
+                        //form.rpckItmAppSrch.setSchema("prcssStatCd", { disabled: true });
+                    }}
+                ></Layout.Button>
+                <Button variant="primary">primary</Button>
+                <Button variant="warning">warning</Button>
+                <Button variant="danger">danger</Button>
+                <Button variant="secondary">secondary</Button>
+                <Button variant="info">info</Button>
+                <Button variant="outline-info">info</Button>
+                <Button variant="outline-primary">outline-primary</Button>
+                <Button variant="outline-danger">outline-danger</Button>
+                <Button variant="outline-secondary">outline-secondary</Button>
             </Layout.Left>
         </Page>
     );
