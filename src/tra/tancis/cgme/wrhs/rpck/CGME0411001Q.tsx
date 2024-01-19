@@ -4,8 +4,8 @@ import { useTranslation } from "react-i18next";
 import { Wijmo } from "@/comn/components";
 import { comnUtils, comnEnvs } from "@/comn/utils"; // 프로젝트 공통 유틸
 import { cgmUtils } from "@/tra/tancis/cgme/comn"; // 시스템 공통 유틸
-import { Page, Group, Layout, Button, FormControl } from "@/comn/components"; // 화면 구성 컴포넌트
-import { useForm, useFetch, useWijmo, useModal, useStore, useToast } from "@/comn/hooks"; // hook
+import { Page, Group, Layout, Button, FormControl, Grid } from "@/comn/components"; // 화면 구성 컴포넌트
+import { useForm, useFetch, useWijmo, useModal, useStore, useToast, useGrid } from "@/comn/hooks"; // hook
 import { BASE, URLS, APIS, SG_RPCK_ITM_APP_LIST, SF_RPCK_ITM_APP_SRCH } from "./services/CgmeRpckItmAppService"; // 서비스
 
 /*
@@ -96,7 +96,7 @@ export const CGME0411001Q = (props: any) => {
      */
     const grid = {
         // Repacking Item Application List !== 재포장 품목 신청서 목록 ==!
-        rpckItmAppList: useWijmo({
+        rpckItmAppList: useGrid({
             defaultSchema: SG_RPCK_ITM_APP_LIST,
             page: pgeStore?.page,
             size: pgeStore?.size,
@@ -339,7 +339,7 @@ export const CGME0411001Q = (props: any) => {
                      * @ 데이터 data={fetch.[fetch 명].data?.[api 리턴 vo 명]}
                      * @ 셀클릭이벤트 연결 : onCellClick={handler.[그리드 이벤트 핸들러명]}
                      */}
-                    <Wijmo
+                    <Grid
                         {...grid.rpckItmAppList.grid}
                         data={fetch.getRpckItmAppList.data?.rpckItmAppList}
                         onCellClick={handler.click_Grid_RpckItmAppList}

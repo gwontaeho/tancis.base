@@ -82,59 +82,47 @@ export const APIS = {
  */
 
 // Schema of Repacking Item Application List Grid !== 재포장 품목 신청서 목록 그리드 스키마 ==!
-export const SG_RPCK_ITM_APP_LIST: WijmoSchemaType = {
+export const SG_RPCK_ITM_APP_LIST = {
     id: "grid",
     options: { pagination: "out", isReadOnly: false, checkbox: true },
     head: [
-        { cells: [{ header: "L_DCLR_NO" }] },
-        { cells: [{ header: "L_WRHS", binding: "wrhsCd" }] },
-        { cells: [{ header: "L_MRN", binding: "mrn" }] },
-        { cells: [{ header: "L_MSN", binding: "msn" }] },
-        { cells: [{ header: "L_MBL_NO", binding: "mblNo" }] },
-        { cells: [{ header: "L_GODS_DESC", binding: "godsDesc" }] },
-        { cells: [{ header: "L_PCKG_NO", binding: "blPckgNo" }] },
-        { cells: [{ header: "L_GWGHT", binding: "blGwght" }] },
-        { cells: [{ header: "L_PRCSS_STAT", binding: "prcssStatCd" }] },
+        { width: 200, cells: [{ header: "L_DCLR_NO" }] },
+        { width: 200, cells: [{ header: "L_WRHS", binding: "wrhsCd" }] },
+        { width: 200, cells: [{ header: "L_MRN", binding: "mrn" }] },
+        { width: 200, cells: [{ header: "L_MSN", binding: "msn" }] },
+        { width: 200, cells: [{ header: "L_MBL_NO", binding: "mblNo" }] },
+        { width: 200, cells: [{ header: "L_GODS_DESC", binding: "godsDesc" }] },
+        { width: 200, cells: [{ header: "L_PCKG_NO", binding: "blPckgNo" }] },
+        { width: 200, cells: [{ header: "L_GWGHT", binding: "blGwght" }] },
+        { width: 200, cells: [{ header: "L_PRCSS_STAT", binding: "prcssStatCd" }] },
     ],
     body: [
         {
-            cells: [
-                {
-                    render: (cellData) => {
-                        return (
-                            <span className="underline">
-                                {`${cellData.rowValues.dcltTin}-${cellData.rowValues.dclrYy}-${cellData.rowValues.prcsTpCd}-${cellData.rowValues.dclrSrno}`}
-                            </span>
-                        );
-                    },
-                    binding: `dclrNo`,
-                    width: 200,
-                },
-            ],
+            cells: [{ binding: `dclrNo` }],
         },
         {
-            cells: [{ binding: "wrhsCd", width: 150 }],
+            cells: [{ binding: "wrhsCd" }],
         },
         {
-            cells: [{ binding: "mrn", width: 100 }],
+            cells: [{ binding: "mrn" }],
         },
         {
-            cells: [{ binding: "msn", width: 100 }],
+            cells: [{ binding: "msn" }],
         },
         {
-            cells: [{ binding: "mblNo", width: 100 }],
+            cells: [{ binding: "mblNo" }],
         },
         {
-            cells: [{ binding: "godsDesc", width: "*" }],
+            cells: [{ binding: "godsDesc" }],
         },
         {
-            cells: [{ binding: "blPckgNo", width: 100 }],
+            cells: [{ binding: "blPckgNo" }],
         },
         {
-            cells: [{ binding: "blGwght", width: 100 }],
+            cells: [{ binding: "blGwght" }],
         },
         {
-            cells: [{ binding: "prcssStatCd", width: 100 }],
+            cells: [{ binding: "prcssStatCd" }],
         },
     ],
 };
@@ -314,55 +302,55 @@ export const SF_RPCK_ITM_APP_ITM_SRCH: TFormSchema = {
  */
 
 // Schema of Repacking Item Application List Grid !== 재포장 품목 신청서 목록 그리드 스키마 ==!
-export const SG_RPCK_ITM_APP_ITM_LIST: WijmoSchemaType = {
+export const SG_RPCK_ITM_APP_ITM_LIST = {
     id: "grid",
     options: { pagination: "out", isReadOnly: true, checkbox: true },
     head: [
-        { cells: [{ header: "L_MRN", binding: "mrn" }] },
-        { cells: [{ header: "L_MSN", binding: "msn" }] },
-        { cells: [{ header: "L_HSN", binding: "hsn" }] },
-        { cells: [{ header: "L_HS_CD", binding: "hsCd" }] },
-        { cells: [{ header: "L_SPCD", binding: "spcd" }] },
-        { cells: [{ header: "L_ORGN_QTY", binding: "orgnQty" }] },
-        { cells: [{ header: "L_ORGN_WGHT", binding: "orgnWght" }] },
-        { cells: [{ header: "L_ORGN_BOND_VAL", binding: "orgnBondVal" }] },
-        { cells: [{ header: "L_ITM_QTY", binding: "itmQty" }] },
-        { cells: [{ header: "L_ITM_WGHT", binding: "itmWght" }] },
-        { cells: [{ header: "L_BOND_VAL", binding: "bondVal" }] },
+        { width: 200, cells: [{ header: "L_MRN", binding: "mrn" }] },
+        { width: 200, cells: [{ header: "L_MSN", binding: "msn" }] },
+        { width: 200, cells: [{ header: "L_HSN", binding: "hsn" }] },
+        { width: 200, cells: [{ header: "L_HS_CD", binding: "hsCd" }] },
+        { width: 200, cells: [{ header: "L_SPCD", binding: "spcd" }] },
+        { width: 200, cells: [{ header: "L_ORGN_QTY", binding: "orgnQty" }] },
+        { width: 200, cells: [{ header: "L_ORGN_WGHT", binding: "orgnWght" }] },
+        { width: 200, cells: [{ header: "L_ORGN_BOND_VAL", binding: "orgnBondVal" }] },
+        { width: 200, cells: [{ header: "L_ITM_QTY", binding: "itmQty" }] },
+        { width: 200, cells: [{ header: "L_ITM_WGHT", binding: "itmWght" }] },
+        { width: 200, cells: [{ header: "L_BOND_VAL", binding: "bondVal" }] },
     ],
     body: [
         {
-            cells: [{ binding: "mrn", width: 150 }],
+            cells: [{ binding: "mrn" }],
         },
         {
-            cells: [{ binding: "msn", width: 150 }],
+            cells: [{ binding: "msn" }],
         },
         {
-            cells: [{ binding: "hsn", width: 100 }],
+            cells: [{ binding: "hsn" }],
         },
         {
-            cells: [{ binding: "hsCd", width: 150 }],
+            cells: [{ binding: "hsCd" }],
         },
         {
-            cells: [{ binding: "spcd", width: 150 }],
+            cells: [{ binding: "spcd" }],
         },
         {
-            cells: [{ binding: "orgnQty", width: 150 }],
+            cells: [{ binding: "orgnQty" }],
         },
         {
-            cells: [{ binding: "orgnWght", width: 150 }],
+            cells: [{ binding: "orgnWght" }],
         },
         {
-            cells: [{ binding: "orgnBondVal", width: 150 }],
+            cells: [{ binding: "orgnBondVal" }],
         },
         {
-            cells: [{ binding: "itmQty", width: 100 }],
+            cells: [{ binding: "itmQty" }],
         },
         {
-            cells: [{ binding: "itmWght", width: 100 }],
+            cells: [{ binding: "itmWght" }],
         },
         {
-            cells: [{ binding: "bondVal", width: "*" }],
+            cells: [{ binding: "bondVal" }],
         },
     ],
 };

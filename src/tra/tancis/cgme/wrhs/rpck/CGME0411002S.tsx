@@ -3,8 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { comnEnvs, comnUtils } from "@/comn/utils";
 import { cgmUtils } from "@/tra/tancis/cgme/comn"; // 시스템 공통 유틸
-import { Page, Group, Layout, Button, Wijmo } from "@/comn/components";
-import { useForm, useToast, useFetch, useModal, useAuth, useStore, useWijmo, usePopup } from "@/comn/hooks";
+import { Page, Group, Layout, Button, Wijmo, Grid } from "@/comn/components";
+import { useForm, useToast, useFetch, useModal, useAuth, useStore, useWijmo, usePopup, useGrid } from "@/comn/hooks";
 import { BASE, URLS, APIS, SF_RPCK_ITM_APP, SG_RPCK_ITM_APP_ITM_LIST } from "./services/CgmeRpckItmAppService";
 
 /*
@@ -81,7 +81,7 @@ export const CGME0411002S = () => {
      */
     const grid = {
         // Repacking Item Application List !== 재포장 품목 신청서 목록 ==!
-        rpckItmAppItmList: useWijmo({
+        rpckItmAppItmList: useGrid({
             defaultSchema: SG_RPCK_ITM_APP_ITM_LIST,
             page: 0,
             size: 10,
@@ -280,7 +280,7 @@ export const CGME0411002S = () => {
                                 type: "warning",
                             });
                         } else {
-                            grid.rpckItmAppItmList.addRow(item);
+                            grid.rpckItmAppItmList.addRow();
                         }
                     });
                 },
@@ -296,7 +296,7 @@ export const CGME0411002S = () => {
             modal.openModal({
                 content: "msg.00103",
                 onConfirm: () => {
-                    grid.rpckItmAppItmList.deleteRow();
+                    // grid.rpckItmAppItmList.deleteRow();
                 },
             });
         },
@@ -483,7 +483,7 @@ export const CGME0411002S = () => {
                      * @ 데이터 data={fetch.[fetch 명].data?.[api 리턴 vo 명]}
                      * @ 셀클릭이벤트 연결 : onCellClick={handler.[그리드 이벤트 핸들러명]}
                      */}
-                    <Wijmo {...grid.rpckItmAppItmList.grid} data={fetch.getRpckItmAppItmList.data?.rpckItmAppItmList} />
+                    <Grid {...grid.rpckItmAppItmList.grid} data={fetch.getRpckItmAppItmList.data?.rpckItmAppItmList} />
                 </Group.Body>
             </Group>
 
