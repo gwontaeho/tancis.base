@@ -1,7 +1,7 @@
 import { api } from "@/comn";
 import { comnEnvs, comnUtils } from "@/comn/utils";
 import { cgmUtils, cgmEnvs } from "@/tra/tancis/cgme/comn"; // 시스템 공통 유틸
-import { TFormSchema } from "@/comn/hooks";
+import { TFormSchema, TGridSchema } from "@/comn/hooks";
 import { WijmoSchemaType } from "@/comn/hooks";
 
 /*
@@ -82,9 +82,9 @@ export const APIS = {
  */
 
 // Schema of Repacking Item Application List Grid !== 재포장 품목 신청서 목록 그리드 스키마 ==!
-export const SG_RPCK_ITM_APP_LIST = {
+export const SG_RPCK_ITM_APP_LIST: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", isReadOnly: false, checkbox: true },
+    options: { pagination: "out", checkbox: true },
     head: [
         { width: 200, cells: [{ header: "L_DCLR_NO" }] },
         { width: 200, cells: [{ header: "L_WRHS", binding: "wrhsCd" }] },
@@ -302,9 +302,9 @@ export const SF_RPCK_ITM_APP_ITM_SRCH: TFormSchema = {
  */
 
 // Schema of Repacking Item Application List Grid !== 재포장 품목 신청서 목록 그리드 스키마 ==!
-export const SG_RPCK_ITM_APP_ITM_LIST = {
+export const SG_RPCK_ITM_APP_ITM_LIST: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", isReadOnly: true, checkbox: true },
+    options: { pagination: "out", checkbox: true },
     head: [
         { width: 200, cells: [{ header: "L_MRN", binding: "mrn" }] },
         { width: 200, cells: [{ header: "L_MSN", binding: "msn" }] },
