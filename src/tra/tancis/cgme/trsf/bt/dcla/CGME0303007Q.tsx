@@ -187,7 +187,7 @@ export const CGME0303007Q = (props: any) => {
         },
         saveBtVhclInfo: form.btVhclRDto.handleSubmit(
             () => {
-                const btVhclRDto = form.btVhclRDto.getFormValues();
+                const btVhclRDto = form.btVhclRDto.getValues();
                 //btVhclRDto.vhclOwrYn = btVhclRDto.vhclOwrYn.join("");
                 const vhclData = { ...btVhclRDto, cntrList: grid.btVhclCntrList.getData() || [] };
                 console.log(vhclData);

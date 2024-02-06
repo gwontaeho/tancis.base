@@ -311,7 +311,7 @@ export const CGME0303002S = (props: any) => {
         saveCgmeBtInfo: form.btMDto.handleSubmit(
             () => {
                 SetShowState(false);
-                const data = { ...form.btMDto.getFormValues(), btVhclList: grid.btMVhclList.getData() };
+                const data = { ...form.btMDto.getValues(), btVhclList: grid.btMVhclList.getData() };
                 modal.openModal({
                     content: "msg.00101",
                     onConfirm: () => {
@@ -456,7 +456,7 @@ export const CGME0303002S = (props: any) => {
             // 그리드 체크박스 제거, 버튼 없어야 되고
             // editable
         } else {
-            form.btMDto.setSchemaAll(SF_BT_M);
+            form.btMDto.resetSchema(SF_BT_M);
         }
     }, [prcssStatCd]);
 

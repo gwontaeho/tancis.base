@@ -137,7 +137,7 @@ export const CGME0601002S = () => {
         //Grid에서 사용하는 값은 setStore 사용
         setStore(pgeUid, { prcssStatCd: prcssStatCd });
         if (prcssStatCd.editable) {
-            form.spcdApp.setSchemaAll(SF_SPCD_APP);
+            form.spcdApp.resetSchema(SF_SPCD_APP);
         } else {
             //form.spcdApp.setSchemas(["dclrRsn"], { readOnly: true });
             form.spcdApp.setEditable(false);

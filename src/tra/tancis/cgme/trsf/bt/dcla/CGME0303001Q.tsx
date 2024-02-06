@@ -235,13 +235,13 @@ export const CGME0303001Q = (props: any) => {
     const fetch = {
         getCgmeBtList: useFetch({
             api: (page = grid.btMList.page) => {
-                return APIS.getCgmeBtList(form.btMSrch.getFormValues(), page, grid.btMList.size);
+                return APIS.getCgmeBtList(form.btMSrch.getValues(), page, grid.btMList.size);
             },
             enabled: comnUtils.isEmpty(form.btMSrch.errors) && form.btMSrch.isSubmitted,
             key: [grid.btMList.page, grid.btMList.size],
             onSuccess: () => {
                 setStore(pgeUid, {
-                    form: form.btMSrch.getFormValues(),
+                    form: form.btMSrch.getValues(),
                     page: grid.btMList.page,
                     size: grid.btMList.size,
                 });

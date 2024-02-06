@@ -138,7 +138,7 @@ export const CGME0411001Q = (props: any) => {
         // Get Repacking Item Application List !== 재포장 품목 신청서 목록 조회 ==!
         getRpckItmAppList: useFetch({
             api: (page = grid.rpckItmAppList.page) => {
-                return APIS.getRpckItmAppList(form.rpckItmAppSrch.getFormValues(), page, grid.rpckItmAppList.size);
+                return APIS.getRpckItmAppList(form.rpckItmAppSrch.getValues(), page, grid.rpckItmAppList.size);
             },
             enabled: comnUtils.isEmpty(form.rpckItmAppSrch.errors) && form.rpckItmAppSrch.isSubmitted,
             key: [grid.rpckItmAppList.page, grid.rpckItmAppList.size],

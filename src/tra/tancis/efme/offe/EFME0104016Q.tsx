@@ -50,13 +50,13 @@ export const EFME0104016Q = (props: any) => {
     const fetch = {
         getOffeList: useFetch({
             api: (page = grid.offeList.page) => {
-                return APIS.getOffeList(form.offeSrch.getFormValues(), page, grid.offeList.size);
+                return APIS.getOffeList(form.offeSrch.getValues(), page, grid.offeList.size);
             },
             enabled: comnUtils.isEmpty(form.offeSrch.errors) && form.offeSrch.isSubmitted,
             key: [grid.offeList.page, grid.offeList.size],
             onSuccess: () => {
                 setStore(pgeUid, {
-                    form: form.offeSrch.getFormValues(),
+                    form: form.offeSrch.getValues(),
                     page: grid.offeList.page,
                     size: grid.offeList.size,
                 });

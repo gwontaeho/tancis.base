@@ -108,7 +108,7 @@ export const CGME0303003Q = (props: any) => {
     const fetch = {
         getTansadNoList: useFetch({
             api: (page = grid.tansadList.page) => {
-                return APIS.getTansadNoList(form.tansadSrch.getFormValues(), page, grid.tansadList.size);
+                return APIS.getTansadNoList(form.tansadSrch.getValues(), page, grid.tansadList.size);
             },
             enabled: comnUtils.isEmpty(form.tansadSrch.errors) && form.tansadSrch.isSubmitted,
             key: [grid.tansadList.page, grid.tansadList.size],

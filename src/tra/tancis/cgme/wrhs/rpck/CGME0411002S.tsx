@@ -232,7 +232,7 @@ export const CGME0411002S = () => {
         // Save Repacking Item Application !== 재포장 품목 신청서 저장 ==!
         saveRpckItmApp: form.rpckItmApp.handleSubmit(
             () => {
-                const data = { ...form.rpckItmApp.getFormValues(), rpckItmList: grid.rpckItmAppItmList.getData() };
+                const data = { ...form.rpckItmApp.getValues(), rpckItmList: grid.rpckItmAppItmList.getData() };
                 modal.openModal({
                     content: "msg.00101",
                     onConfirm: () => {
