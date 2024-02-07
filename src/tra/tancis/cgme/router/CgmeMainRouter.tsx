@@ -1,8 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { cgmEnvs } from "@/tra/tancis/cgme/comn";
 import { WrhsRouter } from "@/tra/tancis/cgme/router/WrhsRouter";
-import { IoRouter } from "@/tra/tancis/cgme/router/IoRouter";
-import { TrsfRouter } from "@/tra/tancis/cgme/router/TrsfRouter";
 
 /*
  * 응용기능별 Router
@@ -18,8 +15,6 @@ export const CgmeMainRouter = () => {
     return (
         <Routes>
             <Route path={`/wrhs/*`} element={<WrhsRouter />} />
-            <Route path={`/io/*`} element={<IoRouter />} />
-            <Route path={`/trsf/*`} element={<TrsfRouter />} />
         </Routes>
     );
 };

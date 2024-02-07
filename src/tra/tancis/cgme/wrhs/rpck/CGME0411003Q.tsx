@@ -1,11 +1,10 @@
 import { useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Wijmo } from "@/comn/components";
 import { cgmUtils } from "@/tra/tancis/cgme/comn"; // 시스템 공통 유틸
 import { Page, Group, Layout, Button, Grid } from "@/comn/components";
 import { comnEnvs, comnUtils } from "@/comn/utils";
-import { useForm, useToast, useFetch, useModal, useStore, useWijmo, usePopup, useGrid } from "@/comn/hooks";
+import { useForm, useToast, useFetch, useModal, useStore, usePopup, useGrid } from "@/comn/hooks";
 import { BASE, URLS, APIS, SF_RPCK_ITM_APP_ITM_SRCH, SG_RPCK_ITM_APP_ITM_LIST } from "./services/CgmeRpckItmAppService";
 
 export const CGME0411003Q = (props: any) => {

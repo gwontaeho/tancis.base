@@ -1,7 +1,6 @@
 import { api } from "@/comn";
 import { comnEnvs, comnUtils } from "@/comn/utils";
 import { TFormSchema } from "@/comn/hooks";
-import { WijmoSchemaType } from "@/comn/hooks";
 
 /*
  * Repacking Item Declaration Service
@@ -75,9 +74,9 @@ export const APIS = {
  */
 
 // Schema of Repacking Item Application List Grid !== 재포장 품목 신청서 목록 그리드 스키마 ==!
-export const SG_RPCK_ITM_APP_LIST: WijmoSchemaType = {
+export const SG_RPCK_ITM_APP_LIST = {
     id: "grid",
-    options: { pagination: "out", isReadOnly: true, checkbox: true },
+    options: { pagination: "out", checkbox: true },
     head: [
         { cells: [{ header: "L_DCLR_NO" }] },
         { cells: [{ header: "L_WRHS", binding: "wrhsCd" }] },
@@ -93,9 +92,6 @@ export const SG_RPCK_ITM_APP_LIST: WijmoSchemaType = {
         {
             cells: [
                 {
-                    render: (cellData) => {
-                        return `${cellData.rowValues.dcltTin}-${cellData.rowValues.dclrYy}-${cellData.rowValues.prcsTpCd}-${cellData.rowValues.dclrSrno}`;
-                    },
                     binding: `dclrNo`,
                     width: 200,
                 },
