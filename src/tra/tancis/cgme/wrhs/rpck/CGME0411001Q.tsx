@@ -1,10 +1,11 @@
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { Grid } from "@/comn/components";
 import { comnUtils, comnEnvs } from "@/comn/utils"; // 프로젝트 공통 유틸
 import { cgmUtils } from "@/tra/tancis/cgme/comn"; // 시스템 공통 유틸
-import { Page, Group, Layout, Button, FormControl, Grid } from "@/comn/components"; // 화면 구성 컴포넌트
-import { useForm, useFetch, useModal, useStore, useToast, useGrid } from "@/comn/hooks"; // hook
+import { Page, Group, Layout, Button, FormControl } from "@/comn/components"; // 화면 구성 컴포넌트
+import { useForm, useFetch, useResource, useGrid, useModal, useStore, useToast, usePopup } from "@/comn/hooks"; // hook
 import { BASE, URLS, APIS, SG_RPCK_ITM_APP_LIST, SF_RPCK_ITM_APP_SRCH } from "./services/CgmeRpckItmAppService"; // 서비스
 
 /*
@@ -41,12 +42,17 @@ export const CGME0411001Q = (props: any) => {
      * !== Hook, 메타 정보 정의 ==!
      */
 
+    useResource({
+        defaultSchema: [{ area: "comnCd", comnCd: "COM_0100" }, { area: "wrhsCd" }],
+    });
+
     const pgeUid = "UI-CGME-0411-001Q"; // Page Unique identifier !== 화면 고유 식별자 ==!
     const { t } = useTranslation(); // Translation Hook !== 언어 변환 Hook ==!
     const navigate = useNavigate(); // Navigate Hook !== 화면 이동 Hook ==!
     const modal = useModal(); // Modal Window Hook !== Modal 창 Hook ==!
     const { pgeStore, setStore, getStore } = useStore({ pgeUid: pgeUid }); // Page Store Hook !== 화면 데이터 저장 Hook ==!
     const toast = useToast(); // Toast Message Hook !== Toast 메세지 표시 Hook ==!
+    const { openPopup } = usePopup();
 
     /*
      * @ 화면에서 사용하는 form 객체를 선언
@@ -218,16 +224,109 @@ export const CGME0411001Q = (props: any) => {
         },
         // Click Grid of Repacking Item Application List !== 재포장 품목 신청서 목록 그리드 클릭 ==!
         click_Grid_RpckItmAppList: {
-            dclrNo: (data: any) => {
-                //console.log(getStore(pgeUid));
-                //console.log(fetch.getRpckItmAppList.data);
-                const dclrNo = `${data.rowValues.dcltTin}-${data.rowValues.dclrYy}-${data.rowValues.prcsTpCd}-${data.rowValues.dclrSrno}`;
-                navigate(`${URLS.cgme0411002s}/${dclrNo}`);
+            wrhsCd: (props: any) => {
+                const { binding, rowValues, value } = props;
+                console.log(props);
             },
         },
         click_GridRow_RpckItmAppList: (data: any) => {
-            const { binding, value, rowValues } = data;
-            console.log(binding, value, rowValues);
+            const { binding, rowValues, value } = props;
+            console.log(props);
+        },
+    };
+
+    const render = {
+        grid_RpckItmAppList: {
+            head: {
+                mrn: (props: any) => {
+                    return (
+                        <>
+                            <Group.Any>전체변경 : </Group.Any>
+                            <FormControl
+                                type="select"
+                                options={[{ label: "1", value: "1" }]}
+                                onChange={(v) => {
+                                    const list = grid.rpckItmAppList.getData();
+                                    list.map((item: any) => {
+                                        grid.rpckItmAppList.updateRow({ ...item, mrn: v });
+                                    });
+                                }}
+                            />
+                        </>
+                    );
+                },
+            },
+            cell: {
+                dclrNo: (props: any) => {
+                    const { binding, rowValues, value } = props;
+                    return (
+                        <Link
+                            to={`${URLS.cgme0411002s}/${rowValues.dcltTin}-${rowValues.dclrYy}-${rowValues.prcsTpCd}-${rowValues.dclrSrno}`}
+                        >{`${rowValues.dcltTin}-${rowValues.dclrYy}-${rowValues.prcsTpCd}-${rowValues.dclrSrno}`}</Link>
+                    );
+                },
+            },
+            edit: {
+                msn: (props: any) => {
+                    const { binding, rowValues, value } = props;
+                    return (
+                        <Layout direction="row" gap={1}>
+                            <FormControl
+                                value={rowValues.msn}
+                                onChange={(v) => {
+                                    grid.rpckItmAppList.updateRow({ ...rowValues, msn: v });
+                                }}
+                                rightButton={{
+                                    icon: "search",
+                                    onClick: (props: any) => {
+                                        console.log(props);
+                                        openPopup({
+                                            url: `${comnEnvs.base_comn}/comn/ppup/coCdPpup`,
+                                            callback: ({ data }) => {
+                                                grid.rpckItmAppList.updateRow({ ...rowValues, msn: data.coTin });
+                                            },
+                                        });
+                                    },
+                                }}
+                            />
+                        </Layout>
+                    );
+                },
+                dclrNo: (props: any) => {
+                    const { binding, rowValues, value } = props;
+
+                    return (
+                        <Layout direction="row" gap={1}>
+                            <FormControl
+                                value={rowValues.dcltTin}
+                                onChange={(v) => {
+                                    grid.rpckItmAppList.updateRow({ ...rowValues, dcltTin: v });
+                                }}
+                            />
+                            <FormControl
+                                value={rowValues.dclrYy}
+                                onChange={(v) => {
+                                    grid.rpckItmAppList.updateRow({ ...rowValues, dclrYy: v });
+                                }}
+                            />
+                            <FormControl
+                                value={rowValues.prcsTpCd}
+                                onChange={(v) => {
+                                    grid.rpckItmAppList.updateRow({ ...rowValues, prcsTpCd: v });
+                                }}
+                            />
+                            <FormControl
+                                value={rowValues.dclrSrno}
+                                readOnly={rowValues.prcsTpCd == "1"}
+                                onChange={(v) => {
+                                    grid.rpckItmAppList.updateRow({ ...rowValues, dclrSrno: v });
+                                }}
+                            />
+                            <Button>테스트</Button>
+                        </Layout>
+                    );
+                },
+            },
         },
     };
 
@@ -341,46 +440,275 @@ export const CGME0411001Q = (props: any) => {
                     <Grid
                         {...grid.rpckItmAppList.grid}
                         data={fetch.getRpckItmAppList.data?.rpckItmAppList}
+                        render={render.grid_RpckItmAppList}
                         onCellClick={handler.click_Grid_RpckItmAppList}
                         onRowClick={handler.click_GridRow_RpckItmAppList}
                     />
                 </Group.Body>
             </Group>
+            <Layout direction="row">
+                <Layout.Left>
+                    <Layout.Button
+                        role="new"
+                        onClick={() => {
+                            navigate(URLS.cgme0411002s);
+                        }}
+                    >
+                        {t("B_NEW_$0", { 0: t("L_RPCK_BL") })}
+                    </Layout.Button>
+                    <Layout.Button
+                        role="gridDelete"
+                        onClick={() => {
+                            //form.rpckItmAppSrch.setEditable(false);
+                            //console.log(form.rpckItmAppSrch.getValues());
+                            //form.rpckItmAppSrch.setSchema("prcssStatCd", { options: [{ label: "1", value: "1" }] });
+                            //grid.rpckItmAppList.setEdit("cell", "mrn", false);
+                            //grid.rpckItmAppList.setEdit("column", "mrn", false);
+                            form.rpckItmAppSrch.setSchema("prcssStatCd", { comnCd: "COM_0100" });
+                        }}
+                    ></Layout.Button>
+                    <Layout.Button
+                        onClick={() => {
+                            //const row = grid.rpckItmAppList.getData();
+                            //row[0].wrhsCd = "111111";
+                            //grid.rpckItmAppList.updateRow(row[0]);
+                            //form.rpckItmAppSrch.setValue("prcssStatCd", undefined);
+                            //form.rpckItmAppSrch.setSchema("prcssStatCd", { disabled: true });
+                            //grid.rpckItmAppList.setShow("column", "wrhsCd", false);
+                            //grid.rpckItmAppList.setShow("column", "mrn", false);
+                            //grid.rpckItmAppList.setEdit("cell", "mrn", true)
+                            ///grid.rpckItmAppList.setOption("edit", true);
+                            //grid.rpckItmAppList.setOption("radio", false);
+                            //grid.rpckItmAppList.setOption("checkbox", false);
+                            //console.log(grid.rpckItmAppList.getData());
+                            //console.log(grid.rpckItmAppList.getOrigin());
+                            //console.log(grid.rpckItmAppList.getSelectedRow()); // 라디오
+                            //console.log(grid.rpckItmAppList.getChecked()); // 체크박스
+                            //grid.rpckItmAppList.addRow(); // pagination 이 in 인 경우
+                            grid.rpckItmAppList.addRow({ mrn: 1111, dclrNo: 2222 });
+                            grid.rpckItmAppList.addRow({ mrn: 1111, dclrNo: 2222 });
+                            // out 서버에서
+                            // in 데이터르 직접
+                            //grid.rpckItmAppList.deleteRow("checked"); //??
+                            //grid.rpckItmAppList.updateRow(grid.rpckItmAppList.getSelectedRow(), { mrn: "111" });
+                            //grid.rpckItmAppList.setEdit("cell", "mrn", true); // body binding
+                            //grid.rpckItmAppList.setEdit("column", "mrn", true); // head id
+                        }}
+                    ></Layout.Button>
+                    <Button variant="primary">primary</Button>
+                    <Button variant="warning">warning</Button>
+                    <Button variant="danger">danger</Button>
+                    <Button variant="secondary">secondary</Button>
+                    <Button variant="info">info</Button>
+                    <Button variant="outline-info">info</Button>
+                    <Button variant="outline-primary">outline-primary</Button>
+                    <Button variant="outline-danger">outline-danger</Button>
+                    <Button variant="outline-secondary">outline-secondary</Button>
+                </Layout.Left>
+            </Layout>
+            <Layout direction="row">
+                <Layout.Left>
+                    <Button
+                        onClick={() => {
+                            /*
+                             * 그리드 row 추가
+                             * pagination 이 in 인 경우 작동 조건 ( 데이터를 그리드에서 전체 컨트롤 )
+                             * 파라메터
+                             * data : any : 추가될 데이터 object
+                             */
+                            grid.rpckItmAppList.addRow({ mrn: "111111" });
+                        }}
+                    >
+                        addRow
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            /*
+                             * 그리드 row 삭제
+                             * 파라메터
+                             * type : "checkbox" , "radio" , {삭제될 row} : 삭제할 대상은 "checkbox" , "radio" 또는 {삭제할 row object }
+                             */
+                            grid.rpckItmAppList.deleteRow("checkbox");
+                            grid.rpckItmAppList.deleteRow("radio");
+                        }}
+                    >
+                        deleteRow
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            /*
+                             * 그리드 checkbox 에 체크된 row return
+                             * return array
+                             */
+                            const list = grid.rpckItmAppList.getChecked();
+                            console.log(list);
+                        }}
+                    >
+                        getChecked
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            /*
+                             * 그리드 radio 에 선택된 row return
+                             * return object
+                             */
+                            const list = grid.rpckItmAppList.getSelectedRow();
+                            console.log(list);
+                        }}
+                    >
+                        getSelectedRow
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            /*
+                             * 그리드 data return
+                             * return array
+                             */
+                            const list = grid.rpckItmAppList.getData();
+                            console.log(list);
+                        }}
+                    >
+                        getData
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            /*
+                             * 그리드에 fetch 된 오리지널 데이터 return
+                             * return array
+                             */
+                            const list = grid.rpckItmAppList.getOrigin();
+                            console.log(list);
+                        }}
+                    >
+                        getOrigin
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            /*
+                             * 그리드 객체 return
+                             * return object
+                             */
 
-            <Layout.Left>
-                <Layout.Button
-                    onClick={() => {
-                        navigate(URLS.cgme0411002s);
-                    }}
-                >
-                    {t("B_NEW_$0", { 0: t("L_RPCK_BL") })}
-                </Layout.Button>
-                <Layout.Button
-                    onClick={() => {
-                        //form.rpckItmAppSrch.setEditable(false);
-                        //console.log(form.rpckItmAppSrch.getValues());
-                        form.rpckItmAppSrch.setSchema("prcssStatCd", { options: [{ label: "1", value: "1" }] });
-                    }}
-                ></Layout.Button>
-                <Layout.Button
-                    onClick={() => {
-                        //const row = grid.rpckItmAppList.getData();
-                        //row[0].wrhsCd = "111111";
-                        //grid.rpckItmAppList.updateRow(row[0]);
-                        //form.rpckItmAppSrch.setValue("prcssStatCd", undefined);
-                        //form.rpckItmAppSrch.setSchema("prcssStatCd", { disabled: true });
-                    }}
-                ></Layout.Button>
-                <Button variant="primary">primary</Button>
-                <Button variant="warning">warning</Button>
-                <Button variant="danger">danger</Button>
-                <Button variant="secondary">secondary</Button>
-                <Button variant="info">info</Button>
-                <Button variant="outline-info">info</Button>
-                <Button variant="outline-primary">outline-primary</Button>
-                <Button variant="outline-danger">outline-danger</Button>
-                <Button variant="outline-secondary">outline-secondary</Button>
-            </Layout.Left>
+                            console.log(grid.rpckItmAppList.grid);
+                        }}
+                    >
+                        grid
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            /*
+                             * 그리드 data를 origon 으로 되돌려줌
+                             */
+
+                            grid.rpckItmAppList.resetData();
+                        }}
+                    >
+                        resetData
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            /*
+                             * 그리드 데이터 edit , body 의 binding 기준
+                             */
+
+                            grid.rpckItmAppList.setEdit("cell", "mrn", true); // body binding
+                        }}
+                    >
+                        setEdit( cell , true )
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            /*
+                             * 그리드 데이터 edit , body 의 binding 기준
+                             */
+
+                            grid.rpckItmAppList.setEdit("cell", "mrn", false); // body binding
+                        }}
+                    >
+                        setEdit( cell , false )
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            /*
+                             * 그리드 데이터 edit , head 의 id 기준
+                             */
+
+                            grid.rpckItmAppList.setEdit("column", "mrn", true); // body binding
+                        }}
+                    >
+                        setEdit( column , true )
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            /*
+                             * 그리드 데이터 edit , head 의 id 기준
+                             */
+
+                            grid.rpckItmAppList.setEdit("column", "mrn", false); // body binding
+                        }}
+                    >
+                        setEdit( column , false )
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            /*
+                             * 그리드 스키마의 option 변경
+                             */
+
+                            grid.rpckItmAppList.setOption("checkbox", false);
+                            grid.rpckItmAppList.setOption("add", false);
+                            grid.rpckItmAppList.setOption("delete", false);
+                            grid.rpckItmAppList.setOption("edit", true);
+                        }}
+                    >
+                        setOption
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            /*
+                             * 그리드 페이지변경 (0 ~ )
+                             */
+
+                            grid.rpckItmAppList.setPage(1);
+                        }}
+                    >
+                        setPage
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            /*
+                             * 그리드 페이지 사이즈 변경
+                             */
+
+                            grid.rpckItmAppList.setSize(100);
+                        }}
+                    >
+                        setSize
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            /*
+                             * 그리드 필드 보이기/ 숨기기 (head , id )
+                             */
+
+                            grid.rpckItmAppList.setShow("column", "wrhsCd", false);
+                        }}
+                    >
+                        setShow( column )
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            /*
+                             * 그리드 필드 수정
+                             */
+                            const row = grid.rpckItmAppList.getSelectedRow();
+                            grid.rpckItmAppList.updateRow({ ...row, mrn: "1234" });
+                        }}
+                    >
+                        updateRow
+                    </Button>
+                </Layout.Left>
+            </Layout>
         </Page>
     );
 };

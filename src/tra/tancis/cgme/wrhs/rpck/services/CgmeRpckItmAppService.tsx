@@ -1,6 +1,6 @@
 import { api } from "@/comn";
-import { comnUtils } from "@/comn/utils";
-import { cgmEnvs } from "@/tra/tancis/cgme/comn"; // 시스템 공통 유틸
+import { comnEnvs, comnUtils } from "@/comn/utils";
+import { cgmUtils, cgmEnvs } from "@/tra/tancis/cgme/comn"; // 시스템 공통 유틸
 import { TFormSchema, TGridSchema } from "@/comn/hooks";
 
 /*
@@ -77,18 +77,37 @@ export const APIS = {
  * @ 그리드 스키마 정의
  * @ 화면에서 사용하는 그리드 구조 정의
  * @ SG_ 로 시작 (Schema grid)
- * @ SQ_[그리드명 메타 대문자, "_" 로 구분 ]
+ * @ SG_[그리드명가 조회하는 데이터 이름 메타 단어(용어) 대문자, "_" 로 구분 , 그리드명 맨 뒤에 "_LIST" 로 종료]
  */
 
 // Schema of Repacking Item Application List Grid !== 재포장 품목 신청서 목록 그리드 스키마 ==!
 export const SG_RPCK_ITM_APP_LIST: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", checkbox: true },
+    options: {
+        radio: true, // 라디오 버튼 보이기/숨기기 , default : false
+        checkbox: true, //체크박스 보이기 숨기기, default : false
+        pagination: "in", // 그리드 데이터 페이징 "out" : 데이터를 외부에서 페이징해서 가져오는 경우 , "in" : 데이터를 전체 가져와서 그리드 내부에서 페이징 및 편집
+        index: true, // 그리드 번호  index : true ( asc )  , index : "DESC" ( desc 역순 )
+        add: true, // add 버튼 보이기/숨기기 , default : false
+        delete: true, // delete 버튼 보이기/숨기기 , default : false
+        edit: false, // 그리드 편집 가능 여부 , default : false
+        importExcel: true, // 엑셀 import 버튼 보이기 숨기기 (기능 구현 예정) , default : false
+        exportExcel: true, // 엑셀 export 버튼 보이기 숨기기 (기능 구현 예정) , default : false
+        height: 200,
+    },
     head: [
-        { cells: [{ header: "L_DCLR_NO", width: 200 }] },
-        { cells: [{ header: "L_WRHS", binding: "wrhsCd", width: 200 }] },
-        { cells: [{ header: "L_MRN", binding: "mrn", width: 200 }] },
-        { cells: [{ header: "L_MSN", binding: "msn", width: 200 }] },
+        { cells: [{ header: "L_DCLR_NO", binding: "dclrNo", required: true, width: 300 }] },
+        { cells: [{ header: "L_WRHS", binding: "wrhsCd", width: 200 }], id: "wrhsCd" },
+        { cells: [{ header: "L_MRN", binding: "mrn", width: 200 }], id: "mrn" },
+        {
+            cells: [
+                {
+                    header: "L_MSN",
+                    binding: "msn",
+                    width: 200,
+                },
+            ],
+        },
         { cells: [{ header: "L_MBL_NO", binding: "mblNo", width: 200 }] },
         { cells: [{ header: "L_GODS_DESC", binding: "godsDesc", width: 200 }] },
         { cells: [{ header: "L_PCKG_NO", binding: "blPckgNo", width: 200 }] },
@@ -100,13 +119,17 @@ export const SG_RPCK_ITM_APP_LIST: TGridSchema = {
             cells: [{ binding: `dclrNo` }],
         },
         {
-            cells: [{ binding: "wrhsCd" }],
+            cells: [{ binding: "wrhsCd", type: "code", area: "wrhsCd" }],
         },
         {
             cells: [{ binding: "mrn" }],
         },
         {
-            cells: [{ binding: "msn" }],
+            cells: [
+                {
+                    binding: "msn",
+                },
+            ],
         },
         {
             cells: [{ binding: "mblNo" }],
@@ -115,13 +138,13 @@ export const SG_RPCK_ITM_APP_LIST: TGridSchema = {
             cells: [{ binding: "godsDesc" }],
         },
         {
-            cells: [{ binding: "blPckgNo" }],
+            cells: [{ binding: "blPckgNo", align: "right", type: "number", thousandSeparator: true }],
         },
         {
-            cells: [{ binding: "blGwght" }],
+            cells: [{ binding: "blGwght", align: "right", type: "number", thousandSeparator: true }],
         },
         {
-            cells: [{ binding: "prcssStatCd" }],
+            cells: [{ binding: "prcssStatCd", type: "select", area: "comnCd", comnCd: "COM_0100" }],
         },
     ],
 };
@@ -143,10 +166,10 @@ export const SF_RPCK_ITM_APP_SRCH: TFormSchema = {
             label: "L_RGSR_DT",
             start: { name: "strtDt" },
             end: { name: "endDt" },
-            rangeButton: 0,
+            rangeButton: 3,
             controlSize: 10,
         },
-        mrn: { type: "text", label: "L_MRN" },
+        mrn: { type: "file", label: "L_MRN" },
         prcssStatCd: {
             type: "checkbox",
             label: "L_PRCSS_STAT",
@@ -275,6 +298,7 @@ export const SF_RPCK_ITM_APP: TFormSchema = {
         frstRgsrDtm: { type: "datetime", label: "L_FRST_RGSR_DTM" },
         lastMdfrId: { type: "text", label: "L_LAST_MDFR_ID" },
         lastMdfyDtm: { type: "text", label: "L_LAST_MDFY_DTM" },
+        test: { type: "label" },
     },
 };
 
@@ -303,41 +327,55 @@ export const SF_RPCK_ITM_APP_ITM_SRCH: TFormSchema = {
 // Schema of Repacking Item Application List Grid !== 재포장 품목 신청서 목록 그리드 스키마 ==!
 export const SG_RPCK_ITM_APP_ITM_LIST: TGridSchema = {
     id: "grid",
-    options: { pagination: "out", checkbox: true },
+    options: { pagination: "in", edit: false, checkbox: true },
     head: [
-        { cells: [{ header: "L_MRN", binding: "mrn", width: 200 }] },
-        { cells: [{ header: "L_MSN", binding: "msn", width: 200 }] },
-        { cells: [{ header: "L_HSN", binding: "hsn", width: 200 }] },
-        { cells: [{ header: "L_HS_CD", binding: "hsCd", width: 200 }] },
-        { cells: [{ header: "L_SPCD", binding: "spcd", width: 200 }] },
-        { cells: [{ header: "L_ORGN_QTY", binding: "orgnQty", width: 200 }] },
-        { cells: [{ header: "L_ORGN_WGHT", binding: "orgnWght", width: 200 }] },
-        { cells: [{ header: "L_ORGN_BOND_VAL", binding: "orgnBondVal", width: 200 }] },
-        { cells: [{ header: "L_ITM_QTY", binding: "itmQty", width: 200 }] },
-        { cells: [{ header: "L_ITM_WGHT", binding: "itmWght", width: 200 }] },
-        { cells: [{ header: "L_BOND_VAL", binding: "bondVal", width: 200 }] },
+        { cells: [{ header: "L_MRN", binding: "mrn", width: 150 }] },
+        { cells: [{ header: "L_MSN", binding: "msn", width: 150 }] },
+        { cells: [{ header: "L_HSN", binding: "hsn", width: 100 }] },
+        { cells: [{ header: "L_HS_CD", binding: "hsCd", width: 150 }] },
+        { cells: [{ header: "L_SPCD", binding: "spcd", width: 150 }] },
+        { cells: [{ header: "L_ORGN_QTY", binding: "orgnQty", width: 150 }] },
+        { cells: [{ header: "L_ORGN_WGHT", binding: "orgnWght", width: 150 }] },
+        { cells: [{ header: "L_ORGN_BOND_VAL", binding: "orgnBondVal", width: 150 }] },
+        { cells: [{ header: "L_ITM_QTY", binding: "itmQty", width: 100 }] },
+        { cells: [{ header: "L_ITM_WGHT", binding: "itmWght", width: 100 }] },
+        { cells: [{ header: "L_BOND_VAL", binding: "bondVal", width: "*" }] },
     ],
     body: [
         {
-            cells: [{ binding: "mrn" }],
+            cells: [{ binding: "mrn", required: true }],
         },
         {
-            cells: [{ binding: "msn" }],
+            cells: [{ binding: "msn", min: 5 }],
         },
         {
-            cells: [{ binding: "hsn" }],
+            cells: [{ binding: "hsn", max: 10 }],
         },
         {
-            cells: [{ binding: "hsCd" }],
+            cells: [{ binding: "hsCd", minLength: 5 }],
         },
         {
-            cells: [{ binding: "spcd" }],
+            cells: [{ binding: "spcd", maxLength: 10 }],
         },
         {
-            cells: [{ binding: "orgnQty" }],
+            cells: [
+                {
+                    binding: "orgnQty",
+                    pattern: /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i,
+                },
+            ],
         },
         {
-            cells: [{ binding: "orgnWght" }],
+            cells: [
+                {
+                    binding: "orgnWght",
+                    required: true,
+                    validate: (v: any) => {
+                        if (v === "a") return true;
+                        return false;
+                    },
+                },
+            ],
         },
         {
             cells: [{ binding: "orgnBondVal" }],
@@ -349,7 +387,7 @@ export const SG_RPCK_ITM_APP_ITM_LIST: TGridSchema = {
             cells: [{ binding: "itmWght" }],
         },
         {
-            cells: [{ binding: "bondVal" }],
+            cells: [{ binding: "bondVal", area: "comnCd", comnCd: "CAG_0018" }],
         },
     ],
 };

@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { Grid } from "@/comn/components";
 import { cgmUtils } from "@/tra/tancis/cgme/comn"; // 시스템 공통 유틸
-import { Page, Group, Layout, Button, Grid } from "@/comn/components";
+import { Page, Group, Layout, Button } from "@/comn/components";
 import { comnEnvs, comnUtils } from "@/comn/utils";
-import { useForm, useToast, useFetch, useModal, useStore, usePopup, useGrid } from "@/comn/hooks";
+import { useForm, useToast, useFetch, useModal, useStore, useGrid, usePopup } from "@/comn/hooks";
 import { BASE, URLS, APIS, SF_RPCK_ITM_APP_ITM_SRCH, SG_RPCK_ITM_APP_ITM_LIST } from "./services/CgmeRpckItmAppService";
 
 export const CGME0411003Q = (props: any) => {
@@ -65,7 +66,7 @@ export const CGME0411003Q = (props: any) => {
      * @ 기본 변수명은 메타 단어 조합 카멜 표기법을 따름
      * @ 그리드 변수명 뒤에 List (List) 를 붙여 구분
      * @ const grid = {
-     *      [grid 이름] : useWijmo({
+     *      [grid 이름] : useGrid({
      *          defaultSchema: [grid의 schema 구조],
      *          page: [페이지 번호, 기본 0부터 시작],
                 size: [한 페이지에 보여줄 데이터 갯수],
