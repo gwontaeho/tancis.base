@@ -13,7 +13,7 @@ git init
 
 
 @REM add submodule
-git submodule add --name comn http://119.204.73.146/tancis/front/front.com.libts.git src/comn
+git submodule add --name comn http://119.204.73.146/ntancis/front/com/tancis-web-com.git src/comn
 
 
 @REM copy root, src
