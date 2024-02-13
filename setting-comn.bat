@@ -1,6 +1,6 @@
 @REM submodule init, update
 git submodule init
-git submodule update --remote
+git submodule update --remote --force
 
 
 @REM copy root, src
