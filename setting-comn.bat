@@ -8,6 +8,6 @@ xcopy ".\src\comn\.root" ".\" /E /Y
 xcopy ".\src\comn\.src" ".\src" /E /Y
 
 
-npm install
+npm npm install --legacy-peer-deps
 
 
